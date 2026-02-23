@@ -1102,8 +1102,8 @@ summary.spca <- function(spca_obj, cols, contribution = TRUE,
 }
 
 
-#' Format summary matrix for printing
-#' @keywords internal
+# Format summary matrix for printing
+# @keywords internal
 format_summary_matrix <- function(out, contribution) {
   
   # Define which rows get which formatting
