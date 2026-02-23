@@ -2,98 +2,102 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 deflXCforR <- function(comp, K) {
-    .Call('_PMlsspca_deflXCforR', PACKAGE = 'PMlsspca', comp, K)
+    .Call(`_PMlsspca_deflXCforR`, comp, K)
 }
 
 makeVexpC <- function(A, S) {
-    .Call('_PMlsspca_makeVexpC', PACKAGE = 'PMlsspca', A, S)
+    .Call(`_PMlsspca_makeVexpC`, A, S)
 }
 
 mkvexpfirstCompSC <- function(a, S) {
-    .Call('_PMlsspca_mkvexpfirstCompSC', PACKAGE = 'PMlsspca', a, S)
+    .Call(`_PMlsspca_mkvexpfirstCompSC`, a, S)
+}
+
+makeVexpSC <- function(A, S) {
+    .Call(`_PMlsspca_makeVexpSC`, A, S)
 }
 
 MkCorCompMat <- function(A, S, d = 0L) {
-    .Call('_PMlsspca_MkCorCompMat', PACKAGE = 'PMlsspca', A, S, d)
+    .Call(`_PMlsspca_MkCorCompMat`, A, S, d)
 }
 
 aatC <- function(A) {
-    .Call('_PMlsspca_aatC', PACKAGE = 'PMlsspca', A)
+    .Call(`_PMlsspca_aatC`, A)
 }
 
 ataC <- function(A) {
-    .Call('_PMlsspca_ataC', PACKAGE = 'PMlsspca', A)
+    .Call(`_PMlsspca_ataC`, A)
 }
 
 atbC <- function(A, B) {
-    .Call('_PMlsspca_atbC', PACKAGE = 'PMlsspca', A, B)
+    .Call(`_PMlsspca_atbC`, A, B)
 }
 
 abC <- function(A, B) {
-    .Call('_PMlsspca_abC', PACKAGE = 'PMlsspca', A, B)
+    .Call(`_PMlsspca_abC`, A, B)
 }
 
 abtC <- function(A, B) {
-    .Call('_PMlsspca_abtC', PACKAGE = 'PMlsspca', A, B)
+    .Call(`_PMlsspca_abtC`, A, B)
 }
 
 atdaC <- function(A, D) {
-    .Call('_PMlsspca_atdaC', PACKAGE = 'PMlsspca', A, D)
+    .Call(`_PMlsspca_atdaC`, A, D)
 }
 
 atdbC <- function(A, D, B) {
-    .Call('_PMlsspca_atdbC', PACKAGE = 'PMlsspca', A, D, B)
+    .Call(`_PMlsspca_atdbC`, A, D, B)
 }
 
 avC <- function(A, v) {
-    .Call('_PMlsspca_avC', PACKAGE = 'PMlsspca', A, v)
+    .Call(`_PMlsspca_avC`, A, v)
 }
 
 vtaC <- function(A, v) {
-    .Call('_PMlsspca_vtaC', PACKAGE = 'PMlsspca', A, v)
+    .Call(`_PMlsspca_vtaC`, A, v)
 }
 
 vtvC <- function(v) {
-    .Call('_PMlsspca_vtvC', PACKAGE = 'PMlsspca', v)
+    .Call(`_PMlsspca_vtvC`, v)
 }
 
 vtuC <- function(v, u) {
-    .Call('_PMlsspca_vtuC', PACKAGE = 'PMlsspca', v, u)
+    .Call(`_PMlsspca_vtuC`, v, u)
 }
 
 scaleC <- function(A, center = TRUE, scale = TRUE) {
-    .Call('_PMlsspca_scaleC', PACKAGE = 'PMlsspca', A, center, scale)
+    .Call(`_PMlsspca_scaleC`, A, center, scale)
 }
 
 scaleColsC <- function(A, normtype, sig) {
-    .Call('_PMlsspca_scaleColsC', PACKAGE = 'PMlsspca', A, normtype, sig)
+    .Call(`_PMlsspca_scaleColsC`, A, normtype, sig)
 }
 
 sortC <- function(v) {
-    .Call('_PMlsspca_sortC', PACKAGE = 'PMlsspca', v)
+    .Call(`_PMlsspca_sortC`, v)
 }
 
 sumdiagC <- function(S) {
-    .Call('_PMlsspca_sumdiagC', PACKAGE = 'PMlsspca', S)
+    .Call(`_PMlsspca_sumdiagC`, S)
 }
 
 EigenC <- function(S) {
-    .Call('_PMlsspca_EigenC', PACKAGE = 'PMlsspca', S)
+    .Call(`_PMlsspca_EigenC`, S)
 }
 
 GenEigenC <- function(A, B) {
-    .Call('_PMlsspca_GenEigenC', PACKAGE = 'PMlsspca', A, B)
+    .Call(`_PMlsspca_GenEigenC`, A, B)
 }
 
 solveC <- function(S) {
-    .Call('_PMlsspca_solveC', PACKAGE = 'PMlsspca', S)
+    .Call(`_PMlsspca_solveC`, S)
 }
 
 vifSC <- function(S, ind) {
-    .Call('_PMlsspca_vifSC', PACKAGE = 'PMlsspca', S, ind)
+    .Call(`_PMlsspca_vifSC`, S, ind)
 }
 
 vifSPseudoC <- function(S, ind) {
-    .Call('_PMlsspca_vifSPseudoC', PACKAGE = 'PMlsspca', S, ind)
+    .Call(`_PMlsspca_vifSPseudoC`, S, ind)
 }
 
