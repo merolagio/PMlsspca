@@ -2,18 +2,20 @@
 % Please edit documentation in R/Utilities.R
 \name{changeSign_loads_spca}
 \alias{changeSign_loads_spca}
-\title{changes the signs to loadings in spca object}
+\title{Change the sign of selected sparse components}
 \usage{
 changeSign_loads_spca(spca_obj, index_to_change)
 }
 \arguments{
-\item{spca_obj}{an object of class spca}
+\item{spca_obj}{An object of class `spca`.}
 
-\item{index_to_change}{vector of indices of loaidngs to change sign}
+\item{index_to_change}{Integer vector of component indices whose sign should be flipped.}
 }
 \value{
-the spca object with changed signs
+The modified `spca_obj`, with the selected components sign-flipped.
 }
 \description{
-laodings, contributions, correlation between components and scores are changed
+Multiplies by \eqn{-1} the loadings, contributions, and (when present) scores and
+component-correlation entries for the components listed in `index_to_change`.
+This is useful because (sparse) principal components are defined up to sign.
 }
