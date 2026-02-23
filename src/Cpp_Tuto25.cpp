@@ -85,7 +85,28 @@ List makeVexpC(Eigen::MatrixXd A, Eigen::MatrixXd S){
    
    return((B.transpose() * B)(0,0)/(a.transpose() * B)(0,0));
  }
-
+ 
+ // [[Rcpp::export]]
+ List makeVexpSC(Eigen::MatrixXd A, Eigen::MatrixXd S){
+   // computes the extra variance explained by a set of components
+   // must pass covariance or correlation matrix
+   const int p = A.cols();
+   
+   Eigen::VectorXd vexp(p);
+   Eigen::VectorXd cvexp(p);
+   
+   Eigen::MatrixXd M = S * A; 
+   
+   vexp(0) = M.col(0).squaredNorm()/(A.col(0).transpose() * M.col(0));
+   cvexp(0) = vexp(0);
+   for (int i = 1; i < p; i++){
+     cvexp(i) = (M.leftCols(i + 1) *  (A.leftCols(i + 1).transpose() * M.leftCols(i + 1)).inverse() *
+       M.leftCols(i + 1).transpose()).trace();
+     vexp(i) = cvexp(i) - cvexp(i -1);
+   }
+   return List::create(Named("vexp") = vexp, Named("cvexp") = cvexp );
+ }
+ 
 
 // // [[Rcpp::export]]
 List makeEvexpOneCompC(Eigen::MatrixXd A, Eigen::MatrixXd T, Eigen::MatrixXd S, 

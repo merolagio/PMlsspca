@@ -47,6 +47,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// makeVexpSC
+List makeVexpSC(Eigen::MatrixXd A, Eigen::MatrixXd S);
+RcppExport SEXP _PMlsspca_makeVexpSC(SEXP ASEXP, SEXP SSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type A(ASEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type S(SSEXP);
+    rcpp_result_gen = Rcpp::wrap(makeVexpSC(A, S));
+    return rcpp_result_gen;
+END_RCPP
+}
 // MkCorCompMat
 Eigen::MatrixXd MkCorCompMat(Eigen::MatrixXd A, Eigen::MatrixXd S, int d);
 RcppExport SEXP _PMlsspca_MkCorCompMat(SEXP ASEXP, SEXP SSEXP, SEXP dSEXP) {
@@ -301,6 +313,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PMlsspca_deflXCforR", (DL_FUNC) &_PMlsspca_deflXCforR, 2},
     {"_PMlsspca_makeVexpC", (DL_FUNC) &_PMlsspca_makeVexpC, 2},
     {"_PMlsspca_mkvexpfirstCompSC", (DL_FUNC) &_PMlsspca_mkvexpfirstCompSC, 2},
+    {"_PMlsspca_makeVexpSC", (DL_FUNC) &_PMlsspca_makeVexpSC, 2},
     {"_PMlsspca_MkCorCompMat", (DL_FUNC) &_PMlsspca_MkCorCompMat, 3},
     {"_PMlsspca_aatC", (DL_FUNC) &_PMlsspca_aatC, 1},
     {"_PMlsspca_ataC", (DL_FUNC) &_PMlsspca_ataC, 1},
