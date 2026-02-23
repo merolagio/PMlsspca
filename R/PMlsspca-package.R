@@ -1,67 +1,11 @@
 
-#' Baseball hitters career and 1986 season total statistics
-#' 
-#' 16 statistics of 263 major league hitters some of the
-#' overall career and others relative to the 1986 season. Available at StatLib.
-#' The matrix has a block structure, defined by season offensive play, career 
-#' offensive play and season defensive play.
-#' 
-#' 
-#' @name hitters
-#' @docType data
-#' @format A \emph{263} by \emph{17} matrix. The first 16 variables are centered 
-#' and standardized to unit norm.
-#' \describe{
-#' \item{TAB_86}{times at bat in 1986}
-#' \item{HIT_86}{hits in 1986}
-#' \item{HR_86}{home runs in 1986}
-#' \item{RUN_86}{runs in 1986}
-#' \item{RB_86}{runs batted-in in 1986}
-#' \item{WAL_86}{walks in 1986}
-#' \item{WAL}{walks during his career}
-#' \item{PO_86}{put outs in 1986}
-#' \item{ASS_86}{assists in 1986}
-#' \item{ERR_86}{errors in 1986}
-#' \item{YC}{years in the major leagues}
-#' \item{TAB}{times at bat during his career}
-#' \item{HIT}{hits during his career}
-#' \item{HR}{home runs during his career}
-#' \item{RUN}{runs during his career}
-#' \item{RUNB}{runs batted-in during his career}
-#' \item{Salary_86}{Salary in 1986}
-#' }
-#' @source \url{http://lib.stat.cmu.edu/datasets/baseball.data}
-#' @keywords datasets
-NULL
-
-
-#' Baseball hitters statistics labels reference table
-#' 
-#' This data frame provides descriptive labels for the variables in the
-#' hitters datasets matching the short ones used. 
-#'   
-#' @name hitters_labels
-#' @docType data
-#' @format A dataframe with columns
-#' \describe{
-#' \item{short.namethe}{labels ised in plots and tables}
-#' \item{label}{the explanatory name}
-#' \item{type}{whether offensive year 1986, defensive year 86 or offensive over the whole career}
-#' }
-#' @source \url{http://lib.stat.cmu.edu/datasets/baseball.data}
-#' @keywords datasets
-NULL
-
-
-#' PMlspca: Least Squares Sparse PCA utilities
+#' PMlsspca: Least Squares Sparse PCA utilities
 #'
-#' PMlspca provides functions to compute Least Squares Sparse Principal Components Analysis
-#' (LSSPCA) solutions, where sparsity is imposed while targeting PCA’s least-squares
-#' reconstruction objective. This release accompanies the related article and is intended
-#' to support full reproduction of the results reported therein.
+#' Tools to compute LSSPCA solutions and reproduce the results reported in the accompanying article.
 #'
-#' Computation relies on efficient C++ routines and includes multiple options for variable
-#' selection and sparse loading estimation.
+#' The package provides functions to compute Least Squares Sparse Principal Components Analysis (LSSPCA) solutions, where sparsity is imposed while targeting PCA’s least-squares reconstruction objective. This release accompanies the related article and is intended  to support full reproduction of the results reported therein.
+#'
+#' Computation relies on efficient C++ routines and includes multiple options for variable selection and sparse loading estimation.
 #'
 #' S3 methods for objects of class `spca` include:
 #' \tabular{ll}{
@@ -72,17 +16,43 @@ NULL
 #'
 #' Additional utilities include:
 #' \tabular{ll}{
-#' \code{\link{showload}} \tab Display `spca` loadings.\cr
+#' \code{\link{showload}} \tab prints, the nonzero loadings or contributions separatelyfor each sPC.\cr
 #' \code{\link{compare.spca}} \tab Compare multiple `spca` objects (summaries and plots).\cr
 #' \code{\link{aggregate_by_scale}} \tab Aggregate loadings/contributions by scale.\cr
 #' }
 #'
-#' @docType package
-#' @name PMlsspca-package
-#' @import Rcpp, RcppEigen, ggplot2, RMTstats
-#' @references Merola G. M. 2015 \emph{Sparse Principal Component Analysis: a Least Squares Approach}. Australian & New Zealand J. of Statistics. 57(3)\cr\cr
-#' Merola G. M, Chen G. 2019 \emph{Projection sparse principal component analysis: An efficient least squares method}. Journal of Multivariate Analysis. 173. pp. 366-382.
-#' @keywords package
-#' @seealso \code{\link{lsspca}} for usage examples.
-#' @useDynLib PMlsspca 
+#' The script to replicate the examples in the article is available at
+#' \code{inst/scripts/Replicate_Examples.R} and can be located after installation via \code{system.file("scripts", "Replicate_Examples.R", package = "PMlsspca")}.
+#' @keywords internal
+"_PACKAGE"
+#' @useDynLib PMlsspca, .registration = TRUE
+#' @importFrom Rcpp evalCpp
+NULL
+
+#' Sparse principal components object
+#'
+#' Objects of class \code{"spca"} are returned by \code{\link{lsspca}} (and related functions). They store sparse loadings, scores, and summary quantities for the selected components.
+#'
+#' @section Components:
+#' An object of class \code{spca} is a list with the following elements:
+#'  
+#' \describe{
+#' Essential
+#' \item{\emph{loadings}}{Numeric matrix \eqn{p \times r} of sparse loadings.}
+#' \item{\emph{vexp}}{Vector of variance explained by each sparse component.}
+#' \item{\emph{vexpPC}}{a vector of variance explained by the PCss named.} 
+#' \item{\emph{ncomps}}{an integer declaring the number of components named.}
+#' Optional
+#' \item{\code{contributions}}{Numeric matrix \eqn{p \times r} of contributions (sign convention as stored).}
+#' \item{\code{cvvexp}}{a vector of cumulative variance explained.}
+#' \item{\code{rpcvexp}}{a vector of recovered variance relative to the corresponding PC.}
+#' \item{\code{scores}}{Numeric matrix of component scores. Returned only if the data matrix is passed.}
+#' \item{\code{card}}{Optional integer vector of component cardinalities (number of nonzeros).}
+#' \item{\code{loadingslist}}{Optional list of per-component sparse loading vectors.}
+#' \item{\code{corComp}}{Optional \eqn{r \times r} correlation matrix among sparse components.}
+#' }
+#'
+#' @seealso \code{\link{print.spca}}, \code{\link{plot.spca}}, \code{\link{summary.spca}}
+#'
+#' @name spca_object
 NULL
