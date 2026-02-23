@@ -1,13 +1,5 @@
-# is.spca
-# print.spca 
-# summary.spca
-# plot.spca
-# showload
-# plot_vexp.spca
-# make_vif.spca
 
-
-
+#is.pca==============
 #' \strong{Verifies if an object is of class spca}
 #' 
 #' @param x Any object suspected of being of class spca.
@@ -21,7 +13,7 @@
 #' warning is issued, even if the object's class is \emph{spca}.
 #' @return Logical: TRUE if object is of class spca and contains the minimal configuration, 
 #' FALSE otherwise. 
-#' @export is.spca
+#' @export 
 is.spca <- function(x){
   isclass = inherits(x, "spca")
   isloadings = (!is.null(x$loadings))
@@ -74,7 +66,7 @@ is.spca <- function(x){
   }
   return(isit)
 }
-# # # # print.spca
+# print.spca =======================
 #' \strong{Prints the sparse loadings from an spca object}
 #' 
 #' Prints sparse loadings omitting the zero ones and giving the cumulative
@@ -100,33 +92,9 @@ is.spca <- function(x){
 #' arguments.
 #' @note This is a wrapper for the main function in which the "dots" are disabled
 #' so that only exact (or partial) prescribed arguments can be entered. 
-#' @seealso Examples in \link{spcabb} and \link{spcabe}.
-#' @examples 
-#' 
-#' \dontrun{
-#' ### example print.spca ========
-#' library(SPCA3)
-#' data("hitters_cor")
-#' 
-#' ## Four uncorrelated spca components each explaining 95% of PC's vexp
-#' hit_spca = SPCA(M = hitters_cor, alpha = 0.95, ncomps = 4)
-#' 
-#' ## default print. Prints the nonzero % contributions with 1 decimal
-#' print(hit_spca)
-#' 
-#' ## Prints the all loadings with 2 decimals
-#' print(hit_spca, only.nonzero = FALSE, digits = 2, perc = F)
-#' 
-#' ## Prints the nonzero % contributions without decimals 
-#' ## (since % values it means 2 digits)
-#' print(hit_spca,  digits = 2)
-#' 
-#' ## prints contributions larger than 25%
-#' print(hit_spca,  thresh = 0.25)
-#' }
-#' @export print.spca
-print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, thresh = 1E-03, 
-                    rtn = FALSE, namescomp = NULL, ...){#
+#' @export
+#' @method print spca
+print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, thresh = 1E-03, rtn = FALSE, namescomp = NULL, ...){#
   goodarg <- as.list(environment())
   badarg <- eval(substitute(alist(...)))
   if (length(badarg) > 0){
@@ -221,212 +189,179 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
     invisible()
 }
 
-#' #' @export
-#' summary <- function(spca_obj, ...){
-#'   UseMethod("summary", spca_obj)
-#' }
+# #' @export
+# summary <- function(spca_obj, ...){
+#   UseMethod("summary", spca_obj)
+# }
 
-#' \strong{ Prints summaries from an spca object}
-#' 
-#' Prints summaries and comparisons with the full PCA solutions for a set of LS
-#' SPCA loadings.
-#' 
-#' The summaries are printed as formatted text, if rtn = TRUE, the value
-#' returned is a numerical matrix.
-#' 
-#' For each component the following summaries are computed: \tabular{ll}{ 
-#' VEXP\tab The percentage variance explained\cr
-#' CVEXP \tab The percentage cumulative variance explained\cr
-#' RCVEXP \tab The percentage cumulative variance explained relative to that of the corresponding principal components\cr
-#' Card \tab The cardinality, that is the number of non zero loadings\cr
-#' MinLoad \tab Minimum absolute value of the non-zero loadings or contribution if perc = TRUE. }
-#' , the last row gives the minimum absolute percentage contribution, MinPContr.
+# #' \strong{ Prints summaries from an spca object}
+# #' 
+# #' Prints summaries and comparisons with the full PCA solutions for a set of LS
+# #' SPCA loadings.
+# #' 
+# #' The summaries are printed as formatted text, if rtn = TRUE, the value
+# #' returned is a numerical matrix.
+# #' 
+# #' For each component the following summaries are computed: \tabular{ll}{ 
+# #' VEXP\tab The percentage variance explained\cr
+# #' CVEXP \tab The percentage cumulative variance explained\cr
+# #' RCVEXP \tab The percentage cumulative variance explained relative to that of the corresponding principal components\cr
+# #' Card \tab The cardinality, that is the number of non zero loadings\cr
+# #' MinLoad \tab Minimum absolute value of the non-zero loadings or contribution if perc = TRUE. }
+# #' , the last row gives the minimum absolute percentage contribution, MinPContr.
+# #'
+# #' 
+# #' @param object An spca object.
+# #' @param cols A vector indicating which components should be included. Default
+# #' all.  If an iteger is passed, it is set to 1:cols.
+# #' @param perc Logical: should the loadings be standardised to unit L1 norm
+# #' (and printed as percentage contributions)
+# #' @param rtn Logical: should the summary matrix of summaries be returneded?
+# #' @param prn Logical: should anything be printed? Takes priority on prnload.
+# #' @param thrsehcard Value below which loadings are considered zero and not
+# #' counted in the cardinality
+# #' @return If rtn = TRUE, a numerical matrix with the summaries.
+# #' @seealso Examples in \code{\link{SPCA}, \link{spcabe}}
+# #' @export
+# #' @method summary spca
+# summary.spca <- function(spca_obj, cols, perc = TRUE, rtn = FALSE, prn = TRUE, 
+#                         thrsehcard = 0.001){  
+#                         # goodarg = as.list(environment())
+#                         # badarg = eval(substitute(alist(...)))
+#                         # if (length(badarg) > 0){
+#                         #   stop(paste0("\nUnused arguments: ", paste(names(badarg), collapse=", ")))
+#                         # }
+#                         # -- 
+#                         ## generic S3 method creates summaries from spca object printing for contributions
+#                         if ((is.spca(spca_obj) == FALSE)){
+#                           stop("summary.spca works only for spca objects")
+#                         }  
+#                         if( is.vector(spca_obj$loadings) )
+#                           spca_obj$loadings <- as.matrix(spca_obj$loadings)
+#                         if (missing(cols)){
+#                           ## questo cambialo in = vexp
+#                           cols <- 1:min(ncol(spca_obj$loadings), length(spca_obj$vexpPC))  
+#                         }
+#                         else
+#                           if (length(cols) == 1L)
+#                             cols <- 1:cols
+#                           
+#                           out <- rbind(round(spca_obj$vexp*100,1), 
+#                                       round(cumsum(spca_obj$vexp)*100,1),
+#                                       round(cumsum(spca_obj$vexp)/ cumsum(spca_obj$vexpPC)*100,1),
+#                                       round(apply(abs(spca_obj$loadings)> thrsehcard,2,sum))
+#                           )
+#                           out <- as.matrix(out[,cols])
+#                           colnames(out) <- paste("Comp", cols, sep = "")  
+#                           rownames(out) <- 
+#                             c("VEXP", "CVEXP", "RCVEXP",
+#                               "Card")
+#                           
+#                           nc <- 4
+#                           if (!is.null(spca_obj$conv)){
+#                             out <- rbind(out, spca_obj$conv[cols])
+#                             rownames(out)[nc + 1] <- "Converged"
+#                             nc <- nc + 1
+#                           }
+#                           out <- rbind(out, get.minload(spca_obj, perc = perc)[cols])
+#                           if (perc == FALSE)
+#                             rownames(out)[nc + 1] = "MinLoad"
+#                           else
+#                             rownames(out)[nc + 1] = "MinCont"
+#                           
+#                           nc <- nc + 1            
+#                           if(prn == TRUE){
+#                             fx <- format(out, digits = 1, drop0trailing = FALSE, justify = "right")
+#                             if (ncol(out) > 1L){ 
+#                               fx[c(1:3, 5:nc),] <- apply(out[c(1:3, 5:nc),], 2, paste , "%", sep = "")  
+#                               fx[4,] <- format(round(out[4,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
+#                               if (!is.null(spca_obj$conv)){
+#                                 fx[nc -1,] <- format(round(out[nc - 1,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
+#                               }
+#                             }
+#                             else{
+#                               fx[c(1:3, 5:nc),1] <- paste(out[c(1:3, 5:nc),1], "%", sep = "")  
+#                               fx[4,1] <- format(round(out[4,1]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
+#                               if (!is.null(spca_obj$conv)){
+#                                 fx[nc -1,] <- format(round(out[nc - 1,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
+#                               }
+#                               
+#                             }
+#                             if (perc == FALSE)
+#                               fx[nc,] <- format(round(out[nc,], digits = 3), digits = 3, drop0trailing = FALSE, justify = "right")
+#                             else
+#                               fx[nc,] <- paste(round(out[nc,] *100,1), "%", sep = "")
+# 
+#                             print(fx, quote = FALSE, justify = "right")#, ...)
+#                           }
+#                           
+#                           
+#                           if (rtn == TRUE )
+#                             return(out)
+#                           else
+#                             invisible()
+# }
+
+
+## plot.spca=====================
+#' \strong{Plot loadings or contributions from an `spca` object}
 #'
-#' 
-#' @param object An spca object.
-#' @param cols A vector indicating which components should be included. Default
-#' all.  If an iteger is passed, it is set to 1:cols.
-#' @param perc Logical: should the loadings be standardised to unit L1 norm
-#' (and printed as percentage contributions)
-#' @param rtn Logical: should the summary matrix of summaries be returneded?
-#' @param prn Logical: should anything be printed? Takes priority on prnload.
-#' @param thrsehcard Value below which loadings are considered zero and not
-#' counted in the cardinality
-#' @return If rtn = TRUE, a numerical matrix with the summaries.
-#' @seealso Examples in \code{\link{SPCA}, \link{spcabe}}
-#' @examples 
-#' 
-#' \dontrun{
-#'  data("holzinger")
-#' 
-#' ho_spca = lsspca(M = hitters_cor, alpha = 0.95, ncomps = 4,  method = "c", checkrank = TRUE)
-#' ## default summaries
-#' summary(ho_spca)
-#' 
-#' ## summaries of 1st, 3rd and 4th columns showing loadings
-#' summary(ho_spca, cols = c(1, 3, 4), perc = FALSE)
-#' 
-#' }
-#' @export summary.spca
-summary.spca <- function(spca_obj, cols, perc = TRUE, rtn = FALSE, prn = TRUE, 
-                        thrsehcard = 0.001){  
-                        goodarg = as.list(environment())
-                        badarg = eval(substitute(alist(...)))
-                        if (length(badarg) > 0){
-                          stop(paste0("\nUnused arguments: ", paste(names(badarg), collapse=", ")))
-                        }
-                        # -- 
-                        ## generic S3 method creates summaries from spca object printing for contributions
-                        if ((is.spca(spca_obj) == FALSE)){
-                          stop("summary.spca works only for spca objects")
-                        }  
-                        if( is.vector(spca_obj$loadings) )
-                          spca_obj$loadings <- as.matrix(spca_obj$loadings)
-                        if (missing(cols)){
-                          ## questo cambialo in = vexp
-                          cols <- 1:min(ncol(spca_obj$loadings), length(spca_obj$vexpPC))  
-                        }
-                        else
-                          if (length(cols) == 1L)
-                            cols <- 1:cols
-                          
-                          out <- rbind(round(spca_obj$vexp*100,1), 
-                                      round(cumsum(spca_obj$vexp)*100,1),
-                                      round(cumsum(spca_obj$vexp)/ cumsum(spca_obj$vexpPC)*100,1),
-                                      round(apply(abs(spca_obj$loadings)> thrsehcard,2,sum))
-                          )
-                          out <- as.matrix(out[,cols])
-                          colnames(out) <- paste("Comp", cols, sep = "")  
-                          rownames(out) <- 
-                            c("VEXP", "CVEXP", "RCVEXP",
-                              "Card")
-                          
-                          nc <- 4
-                          if (!is.null(spca_obj$conv)){
-                            out <- rbind(out, spca_obj$conv[cols])
-                            rownames(out)[nc + 1] <- "Converged"
-                            nc <- nc + 1
-                          }
-                          out <- rbind(out, get.minload(spca_obj, perc = perc)[cols])
-                          if (perc == FALSE)
-                            rownames(out)[nc + 1] = "MinLoad"
-                          else
-                            rownames(out)[nc + 1] = "MinCont"
-                          
-                          nc <- nc + 1            
-                          if(prn == TRUE){
-                            fx <- format(out, digits = 1, drop0trailing = FALSE, justify = "right")
-                            if (ncol(out) > 1L){ 
-                              fx[c(1:3, 5:nc),] <- apply(out[c(1:3, 5:nc),], 2, paste , "%", sep = "")  
-                              fx[4,] <- format(round(out[4,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
-                              if (!is.null(spca_obj$conv)){
-                                fx[nc -1,] <- format(round(out[nc - 1,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
-                              }
-                            }
-                            else{
-                              fx[c(1:3, 5:nc),1] <- paste(out[c(1:3, 5:nc),1], "%", sep = "")  
-                              fx[4,1] <- format(round(out[4,1]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
-                              if (!is.null(spca_obj$conv)){
-                                fx[nc -1,] <- format(round(out[nc - 1,]), drop0trailing = TRUE, justify = "right",trim = TRUE, nsmall=0)  
-                              }
-                              
-                            }
-                            if (perc == FALSE)
-                              fx[nc,] <- format(round(out[nc,], digits = 3), digits = 3, drop0trailing = FALSE, justify = "right")
-                            else
-                              fx[nc,] <- paste(round(out[nc,] *100,1), "%", sep = "")
-                            # if (perc == TRUE)
-                            #   message("Percentage Contributions")
-                            # else
-                            #   message("Loadings")
-                            
-                            print(fx, quote = FALSE, justify = "right")#, ...)
-                          }
-                          
-                          
-                          if (rtn == TRUE )
-                            return(out)
-                          else
-                            invisible()
-}
-
-
-   ## plot.spca 2019-04-10###
-#' \strong{Plots loadings from an spca object}
-#' 
-#' Plots loadings from an spca solutions.
-#' 
-#' The loadings are plotted as circular or linear barplots. For large
-#' matrices it is reccommended to set onlynonzero = TRUE and variablesnames = FALSE. 
-#' The sparse loadings can be plotted together with the PC's for comparison.
-#' 
-#' @param spca_obj An spca object.
-#' @param nplot The number of components to be plotted. Default all. If an
-#' itenger is passed, it is set to 1:nplot.
-#' @param plotcontributions Logical: should the loading be scaled as percentages?
-#' @param onlynonzero Logical: should only the non-zero loadings be plotted?
-#' @param varnames Hybrid: if TRUE the variable names from the laoding matrix are added to the plot. 
-#' If a vector with the names is passed, those names are used as labels, if FALSE no labels
-#' are added.
-#' @param circular If TRUE a circular barplot is produced. Otherwise a linear one.
-#' @param pcloadings An spca object containing the PCA loadings, typically obtained
-#' with the function pca.
-#' @param colorscale can take values c("cbb", "printsafe", "bw", "ggplot")
-#'  or a pallettte with colour codes. See details for explanation.
-#' @param returnplot Logical, if the plot must be returned
-#' @param produceplot Logical, if the plot is to be plotted (useful when only 
-#' the plot needs to be retuned)
-#' @details colourscaler takes \emph{cbb} for colorblind (with black) friendly, 
-#' \emph{printsafe} for colourblind and printer friendly, \emph{bw} for gray tones and 
-#' \emph{ggplot} for the default ggplot2 scale. A vector with colour hexadecimal RGB 
-#' codes can be passed.
-#' @return If returnplot = TRUE the ggplot2 object
-#' @seealso Examples in \code{\link{spcabe}} and \code{\link{spcabb}}. For plotting two or
-#' more spca solutions together see \code{\link{compare}}.
-#' @references The circular barplots I discovered on the \emph{r-graph-gallery} 
-#' website \url{https://www.r-graph-gallery.com/all-graphs/}. The cbb colur pallette I found on
-#' the \emph{cookbook-r} website, \url{http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/}. The 
-#' printsafe pallette is the OrRd from the colorbrewer2 website \url{http://colorbrewer2.org/}
-#' @examples 
-#' 
-#' \dontrun{
-#' library(SPCA3)
-#' data("hitters_cor")
-#' 
-#' ## Four uncorrelated spca components each explaining 95% of PC's vexp
-#' hit_spca = SPCA(M = hitters_cor, alpha = 0.95, ncomps = 4)
-#' 
-#' ## plot circular barplots of all SPCA contributions 
-#' ## with colourblind friendly colours
-#' plot(hit_spca, nplot = 4, 
-#'      onlynonzero = FALSE, 
-#'      colourscale = "cbb"
-#'     )
-#' 
-#' ## plot circular barplots of nonzero SPCA contributions with printer safe colours
-#' plot(hit_spca, nplot = 4, 
-#'      colourscale = "printsafe"
-#'     )
-#' 
-#' ## plot linear barplots of nonzero SPCA contributions with custom colours
-#' Set1 = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
-#'          "#A65628", "#F781BF", "#999999")#, brewer
-#' plot(hit_spca, nplot = 4, 
-#'      circular = FALSE, 
-#'      colourscale = Set1
-#'     )
-#' 
-#' ## plot SPCA and PCA contributions for 3 components and ggplot2 colours
-#' hit_ee = eigen(hit_c) ## loadings PCA
-#' plot(hit_spca, nplot = 3, 
-#'      colourscale = "ggplot",
-#'      pcloadings = hit_ee$vectors
-#'      ) 
-#' }
-#' @export plot.spca
-#' @export     
-plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE,
-                      varnames = TRUE,  vargroups = NULL, plottitle = NULL,
+#' Plots the sparse loadings (or the corresponding percent contributions) stored in an `spca` object. Plots can be produced as linear bar plots, circular bar plots, or a
+#' tile heat map. For large problems, it is recommended to set `onlynonzero = TRUE` and
+#' `varnames = FALSE`.
+#'
+#' If `pcloadings` is provided, the plot overlays SPCA and PCA values for comparison
+#' (circular bar plots with PCA are not implemented; standard bar plots are used instead).
+#'
+#' @param spca_obj An object of class `spca`.
+#' @param nplot Integer. Number of components to plot. Defaults to `spca_obj$ncomps`.
+#'   If a single integer is passed, components `1:nplot` are plotted.
+#' @param plotcontributions Logical. If `TRUE`, plots contributions (typically scaled to
+#'   sum to 100\% within each component); otherwise plots raw loadings.
+#' @param onlynonzero Logical. If `TRUE`, plots only nonzero entries.
+#' @param varnames Logical or character. If `TRUE`, uses row names of the loading matrix
+#'   (or `VAR1, ..., VARp` if missing). If a character vector of length `p` is supplied,
+#'   it is used as the variable labels. If `FALSE`, variable labels are omitted.
+#' @param vargroups Optional factor/character vector of length `p` defining groups of
+#'   variables. If provided, bars/tiles are colored by group instead of by component.
+#' @param plottitle Optional character. Plot title (added with `labs(title = ...)`).
+#' @param stripnames Optional character vector of facet strip labels for components.
+#'   Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.
+#' @param adjustLabelsCirc Optional numeric vector of length `nplot`. Additive adjustment
+#'   (in degrees) to the component label angles in circular bar plots.
+#' @param plottype Character. Plot type: `"bars"`, `"circular"`, or `"tiles"`. Partial
+#'   matching is supported via the first letter (e.g., `"b"`, `"c"`, `"t"`).
+#' @param plotgrid Logical or character. If `FALSE`, removes the background grid. If `"h"`,
+#'   keeps only horizontal grid lines. If `TRUE`, uses the default grid.
+#' @param legendPosition Character or numeric. Legend position. Can be one of
+#'   `"bottom"`, `"right"`, `"top"`, `"left"`, or a numeric vector of length 2 giving
+#'   coordinates inside the panel. For circular plots, the legend is placed on the right.
+#' @param legendTitle Optional character. Legend title for the fill aesthetic.
+#' @param vert Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).
+#' @param pcloadings Optional numeric matrix of PCA loadings (or PCA contributions) with
+#'   the same dimensions as `spca_obj$loadings`. If supplied, SPCA and PCA values are
+#'   plotted together for comparison (not available for `plottype = "circular"`).
+#' @param colourscale Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,
+#'   `"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette
+#'   is applied to groups; otherwise it is applied to components/methods.
+#' @param returnplot Logical. If `TRUE`, returns the `ggplot2` object.
+#' @param produceplot Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when
+#'   only returning the `ggplot2` object.
+#'
+#' @details
+#' `colourscale` options: `"cbb"` is colorblind-friendly (with black), `"printsafe"` is
+#' colorblind- and printer-friendly, `"bw"` uses gray tones, and `"ggplot"` uses the
+#' default ggplot2 scale. A custom vector of hex RGB colors can also be supplied.
+#'
+#' @return If `returnplot = TRUE`, the `ggplot2` object; otherwise `NULL` (invisibly).
+#' @seealso \code{\link{lsspca}}.
+#' @references
+#' Circular bar plot layouts follow examples from \url{https://www.r-graph-gallery.com/all-graphs/}.
+#' The `cbb` palette is adapted from \url{http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/}.
+#' The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
+#' @export
+#' @method plot spca
+plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL,
                       stripnames = NULL, adjustLabelsCirc = NULL,
                       plottype = c("bars", "circular", "tiles"), 
                       plotgrid = c(TRUE, "h"), legendPosition = c("bottom", "right", "top", "left"),
@@ -541,7 +476,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
     }
     else{
       if (is.null(spca_obj$contributions))
-        contributions <- SPCA3::scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot))
+        contributions <- scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot))
       else 
         contributions <- spca_obj$contributions[, 1:nplot]
       data_df <- data.frame(
@@ -636,6 +571,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
                                       color = "black", fontface = "bold", alpha = 0.85, size = 3.5, 
                                       angle = label_data$angle, inherit.aes  =  FALSE ) 
     }
+##plot bars=======================    
     else{ 
       if(plottype == "bars"){
         # linear barplots
@@ -645,7 +581,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
           pl <- ggplot2::ggplot(data_df, aes(x = variable, y = value, fill = vargroups)) 
         else        
           pl <- ggplot2::ggplot(data_df, aes(x = variable, y = value, fill = component)) 
-        pl = pl + ggplot2::geom_bar(stat = "Identity", color = ifelse(colourscale[1] == "printsafe", "black", NA)) +
+       pl = pl + ggplot2::geom_bar(stat = "Identity", color = ifelse(colourscale[1] == "printsafe", "black", NA)) +
           ggplot2::facet_wrap(facets = vars(component), ncol = ncols, nrow = nrows) +
           ggplot2::geom_abline(slope = 0, intercept = 0) + thisTheme +
           ggplot2::xlab("variables") + ggplot2::ylab( ifelse(plotcontributions == TRUE, "contributions", "loadings"))
@@ -653,6 +589,9 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
           pl <- pl + ggplot2::theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)) 
         else
           pl <- pl +  ggplot2::theme(axis.ticks = element_blank(), axis.text.x = element_blank())
+       if(plotcontributions)
+        pl =  pl + scale_y_continuous(labels = scales::percent)
+       
         if (!is.null(vargroups))
           pl <- pl +  ggplot2::theme(legend.position = legpo)#"right")
       }
@@ -711,7 +650,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
         contributions <- unlist(
           sapply(spca_obj$loadlist[1:nplot], function(x) x/sum(abs(x)))
         )
-        pccontributions <- SPCA3::scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot))
+        pccontributions <- scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot))
         # if(onlynonzero == TRUE){
         #   ii = (pccontributions != 0)
         #   pccontributions <- pccontributions[ii, , drop = FALSE]
@@ -754,8 +693,8 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       
       rownames(pcloadings) = lbl 
       if(plotcontributions == TRUE){
-        value = c(SPCA3::scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot)))
-        PCvalue = c(SPCA3::scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot)))
+        value = c(scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot)))
+        PCvalue = c(scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot)))
       }
       else{
         value = c(spca_obj$loadings[, 1:nplot])
@@ -855,7 +794,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
     invisible()
 }
 
-
+## showload ==================
 #' \strong{Shows the non-zero loadings separately for each component.}
 #' 
 #' Useful for large matrices to see the loadings at the same 
@@ -863,22 +802,18 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
 #' 
 #' @param spca_obj A list of spca objects, typically from SPCA.  It
 #' can also be a simple matrix of loadings.
-#' @param cols A vector containg the indices of the loadings to be shown.  Can
-#' be a single value. if missing all loadings are shown: If an integer is
+#' @param cols A vector containg the indices of the loadings to be shown.  Can be a single value. if missing all loadings are shown: If an integer is
 #' passed, only that dimension will be returned.
-#' @param perc Logical: should the loodings be standardised to unit \eqn{L_1}
-#' norm (and printed as percentage contributions).
+#' @param perc Logical: should the loodings be standardised to unit \eqn{L_1} norm (and printed as percentage contributions).
 #' @param digits Number of decimal digits to show.
 #' @param  variablesnames Hybrid: if not FALSE, need to pass a vector of varaiable names.
 #' @param thresh Loadings with absolute value below this are considered zero.
-#' @param rtn Logical: should the text table of loadings and the matrix of
-#' summaries be returneded?
+#' @param rtn Logical: should the text table of loadings and the matrix of summaries be returneded?
 #' @details variablesnames must have the names of the p variables in the first p
 #' positions.  
 #' @return If rtn = TRUE, it returns a list with the loadings.
-#' @seealso \link{print.spca}, \link{plot.spca}. Examples in
-#' \code{\link{SPCA}}
-#' @export showload
+#' @seealso \link{PMlsspca-package}.
+#' @export 
 showload = function(spca_obj, cols, perc = TRUE, digits = 3,  variablesnames = FALSE, 
                     thresh = 0.001, rtn = FALSE){
   
@@ -939,7 +874,7 @@ showload = function(spca_obj, cols, perc = TRUE, digits = 3,  variablesnames = F
   
 }
 
-
+#new.spca==================
 #' \strong{Constructs an object of class spca from a set of loadings}
 #' 
 #' @param A real matrix, a matrix of loadings.
@@ -968,29 +903,16 @@ showload = function(spca_obj, cols, perc = TRUE, digits = 3,  variablesnames = F
 #'  if X is passed.}
 #'  \item{method}{the string passed as such, if method is passed.}
 #' }
-#' @examples 
-#' \dontrun{
-#' ## compute lsspca.
-#' gg = lsspca(holzinger, ncomps = 3, alpha = 0.8)
-#' 
-#' ## make a new spca object with its loadings
-#' gg_sp = new_spca(gg$loadings, S = cor(hitters), X = hitters, "lsspca")
-#' 
-#' ## print the new object
-#' gg_sp
-
-#' ## get the summaries for the new object
-#' summary(gg_sp)
-#' 
-#' ## plot the new object
-#' plot(gg_sp)
-#' }
+#' @seealso \code{\link{PMlsspca-package}} for a description of an \code{spca} object.
 #' @export 
 new_spca = function(A, S, X = NULL, method = NULL){
   
+#            validation   ==============P
+  if(is.data.frame(A)) A = as.matrix(A)
   if (!is.matrix(A)){
     stop("A must be a matrix of loadings")
   }
+  if((missing(S) && !(is.null(X))))
   if (!(is.matrix(A) & isSymmetric(S))){
     stop("S must be a variance or correlation matrix")
   }
@@ -1036,7 +958,8 @@ new_spca = function(A, S, X = NULL, method = NULL){
   return(obj)
 }
 
-#' Aggregate loadings or contributions by scale
+#aggregate_by_scale========
+#' \strong{Aggregate loadings or contributions by scale}
 #'
 #' Computes scale-level sums by aggregating an input vector or the columns of an
 #' input matrix/data.frame according to a grouping index (e.g., scale membership
@@ -1051,15 +974,6 @@ new_spca = function(A, S, X = NULL, method = NULL){
 #'   matrix/data.frame) of sums aggregated by scale. Rows correspond to scales
 #'   and columns correspond to columns of `x`.
 #'
-#' @examples
-#' set.seed(1)
-#' x <- rnorm(6)
-#' ind <- factor(c("A", "A", "B", "B", "C", "C"))
-#' aggregate_by_scale(x, ind)
-#'
-#' X <- matrix(rnorm(12), nrow = 6, ncol = 2)
-#' aggregate_by_scale(X, ind)
-#'
 #' @export
 aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
   if (is.vector(x)) {
@@ -1067,10 +981,162 @@ aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
   } else {
     out = apply(x, 2, function(y, ii) tapply(y, ii, sum), ii = ind)
     if (only.nonzero)
-      out = drop.levels(out[rowSums(abs(out)) > 0, ])
+      out = droplevels(out[rowSums(abs(out)) > 0, ])
   }
   return(out)
 }
 
+#summary.spca==============
+#' \strong{ Prints summaries from an spca object}
+#' 
+#' Prints summaries and comparisons with the full PCA solutions for a set of LS
+#' SPCA loadings.
+#' 
+#' The summaries are printed as formatted text, if rtn = TRUE, the value
+#' returned is a numerical matrix.
+#' 
+#' For each component the following summaries are computed: \tabular{ll}{ 
+#' VEXP\tab The percentage variance explained\cr
+#' CVEXP \tab The percentage cumulative variance explained\cr
+#' RVEXP \tab The variance explained relative to the corresponding PC\cr
+#' RCVEXP \tab The cumulative variance explained relative to the corresponding PCs\cr
+#' Card \tab The cardinality, that is the number of non zero loadings\cr
+#' MinLoad/MinCont \tab Minimum absolute value of the non-zero loadings or contribution }
+#'
+#' @param spca_obj An spca object.
+#' @param cols A vector indicating which components should be included. Default
+#' all. If an integer is passed, it is set to 1:cols.
+#' @param contribution Logical: should the loadings be standardised to unit L1 norm
+#' (and printed as percentage contributions)
+#' @param variance_metrics Character vector: which variance metrics to include.
+#' Options: "relative" (RVEXP), "cumulative_relative" (RCVEXP), "both", or "none".
+#' Default is "cumulative_relative".
+#' @param minload Logical: should minimum loading/contribution be included?
+#' @param rtn Logical: should the summary matrix be returned?
+#' @param prn Logical: should anything be printed?
+#' @param thrsehcard Value below which loadings are considered zero and not
+#' counted in the cardinality
+#' @return If rtn = TRUE, a numerical matrix with the summaries.
+#' @seealso Examples in \code{\link{lsspca}}.
+#' @export
+#' @method summary spca
+summary.spca <- function(spca_obj, cols, contribution = TRUE, 
+                         variance_metrics = "cumulative_relative",
+                         minload = FALSE, rtn = FALSE, prn = TRUE, 
+                         thrsehcard = 0.001) {
+  
+  # Validation
+  if (!is.spca(spca_obj)) {
+    stop("summary.spca works only for spca objects")
+  }
+  
+  if (is.vector(spca_obj$loadings)) {
+    spca_obj$loadings <- as.matrix(spca_obj$loadings)
+  }
+  
+  # Determine columns
+  if (missing(cols)) {
+    cols <- 1:min(ncol(spca_obj$loadings), length(spca_obj$vexpPC))
+  } else if (length(cols) == 1L) {
+    cols <- 1:cols
+  }
+  
+  # Validate variance_metrics
+  valid_metrics <- c("relative", "cumulative_relative", "both", "none")
+  if (!variance_metrics %in% valid_metrics) {
+    stop("variance_metrics must be one of: ", paste(valid_metrics, collapse = ", "))
+  }
+  
+  # Build summary matrix
+  out <- rbind(
+    VEXP = spca_obj$vexp * 100,
+    CVEXP = cumsum(spca_obj$vexp) * 100
+  )
+  
+  # Add variance comparison metrics based on user choice
+  if (variance_metrics %in% c("relative", "both")) {
+    out <- rbind(out, RVEXP = spca_obj$vexp / spca_obj$vexpPC * 100)
+  }
+  
+  if (variance_metrics %in% c("cumulative_relative", "both")) {
+    out <- rbind(out, RCVEXP = cumsum(spca_obj$vexp) / cumsum(spca_obj$vexpPC) * 100)
+  }
+  
+  # Add cardinality
+  out <- rbind(out, Card = apply(abs(spca_obj$loadings) > thrsehcard, 2, sum))
+  
+  # Add convergence if available
+  if (!is.null(spca_obj$conv)) {
+    out <- rbind(out, Converged = spca_obj$conv)
+  }
+  
+  # Add minimum loading/contribution if requested
+  if (minload) {
+    if (contribution) {
+      min_vals <- get.minload(spca_obj, perc = TRUE) * 100
+      min_label <- "MinCont"
+    } else {
+      min_vals <- get.minload(spca_obj, perc = FALSE)
+      min_label <- "MinLoad"
+    }
+    out <- rbind(out, temp = min_vals)
+    rownames(out)[nrow(out)] <- min_label
+  }
+  
+  # Select requested columns
+  out <- as.matrix(out[, cols, drop = FALSE])
+  colnames(out) <- paste0("Comp", cols)
+  
+  # Print formatted output
+  if (prn) {
+    out_formatted <- format_summary_matrix(out, contribution)
+    print(out_formatted, quote = FALSE, justify = "right")
+  }
+  
+  # Return if requested
+  if (rtn) {
+    return(out)
+  } else {
+    invisible()
+  }
+}
 
+
+#' Format summary matrix for printing
+#' @keywords internal
+format_summary_matrix <- function(out, contribution) {
+  
+  # Define which rows get which formatting
+  percentage_rows <- c("VEXP", "CVEXP", "RVEXP", "RCVEXP", "MinCont")
+  
+  integer_rows <- c("Card", "Converged")
+  decimal_rows <- "MinLoad"
+  
+  # Format each row
+  fx <- matrix("", nrow = nrow(out), ncol = ncol(out))
+  rownames(fx) <- rownames(out)
+  colnames(fx) <- colnames(out)
+  
+  for (i in 1:nrow(out)) {
+    row_name <- rownames(out)[i]
+    
+    if (row_name %in% percentage_rows) {
+      # Format as percentage with 1 decimal
+      fx[i, ] <- paste0(format(round(out[i, ], 1), nsmall = 1, 
+                               drop0trailing = FALSE, justify = "right"), "%")
+      
+    } else if (row_name %in% integer_rows) {
+      # Format as integer
+      fx[i, ] <- format(round(out[i, ]), drop0trailing = TRUE, 
+                        justify = "right", trim = TRUE, nsmall = 0)
+      
+    } else if (row_name %in% decimal_rows) {
+      # Format with 3 decimals (not percentage)
+      fx[i, ] <- format(round(out[i, ], 3), nsmall = 3, 
+                        drop0trailing = FALSE, justify = "right")
+    }
+  }
+  
+  return(fx)
+}
 

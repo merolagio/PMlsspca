@@ -309,13 +309,12 @@ myprintspca = function(smpc, cols, digits = 3, rows, noprint = 1E-03,
 #' @param prn Logical. Should the function print the results?
 #' @param digits. Number of decimal figures to print and return. See details.
 #' @details A wrapper for vifSC in C++. May run into problems if the variables
-#' are perfectly multicollinear, in that c(ase use \code{pseudo = TRUE}.  
+#' are perfectly multicollinear, in that case use \code{pseudo = TRUE}.  
 #' Vifs values are named with \code{colnames(M)}. 
 #' If \code{digits} is 0, loadings are returned unrounded and printed (if enabled) 
 #' to two digits. If \code{digits} > 0, loadings are returned rounded to that value.
 #' @return A list of ordered vifs for each component.
 # was method for class. no need
-## #' @export make_vif.spca
 
 make_vif_R = function(spca_obj, M, intercept = FALSE, pseudo = FALSE, 
                          prn = TRUE, digits = 0){
