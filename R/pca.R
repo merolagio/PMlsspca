@@ -1,8 +1,7 @@
 #' \strong{Computes principal components solutions}
 #' 
-#' Useful for creating an object with stanrd PCA loadings of class \code{spca}
-#' which can run on the spca utilities. Other more comprehensive functions
-#' for PCA exist in R, such as \code{princomp}, for example.
+#' Creates PCA output as an \link{PMlsspca-package} object
+#' which can run on the spca utilities. .
 #' 
 #' @param M A data matrix or correlation or covariance matrix.
 #' @param ncomps Integer: number of loadings to retain. If missing all loadings are
@@ -32,11 +31,8 @@
 #' compute the loadings and is more efficient. Kaiser rule determines the
 #' number of components as the number of eigenvalues larger than one. It should
 #' be used only for correlation matrices, if called on a covariance matrix a
-#' warning is generated.
-#' @examples
-#'  \dontrun{ 
-#' 
-#' }
+#' warning is generated. Note, the Kaiser rule is justified only for the number of factors in Factor Analysis.
+# 
 #' @export pca
 #' @seealso See also \code{\link{print.spca}, \link{summary.spca}}
 pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
