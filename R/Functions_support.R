@@ -36,8 +36,6 @@ else{
 return(vexp)
 }
 
-
-
 eig = function(D, nd = 4, prn = FALSE){
   ## does eigendecomposition returning also vexp and cvexp
   ## returns object spca  
@@ -117,7 +115,6 @@ makezM = function(A,D){
   diag(ncol(D)) - A %*% solve(crossprod(A,D) %*% A) %*% crossprod(A,D) 
 }
 
-
 make.vexpeig = function(ee, ndim, cum = TRUE, dgt = 3){
   ## computes the proportional variance explained by eigenvectors
   if(missing(ndim))
@@ -155,8 +152,6 @@ make.cont = function(smpc){
   }
   return(Ac)
 }
-
-
 
 get.minload = function(smpc, perc = FALSE, eps = 0.001){
   ## returns the non-zero loading with the smallest absolute value for each column
@@ -297,24 +292,24 @@ myprintspca = function(smpc, cols, digits = 3, rows, noprint = 1E-03,
 
 
 ## computes variance inflation factors for all components
-#' \strong{Computes variance inflaction factors for variables in spca components.}
-#' 
-#' result provided by SPCA
-#'   
-#' @param spca_obj An spca object, typically from SPCA. 
-#' @param M the data or covariance/correlation matrix
-#' @param intercept Logical: should the intercept be included in the model? 
-#' @param pseudo, should compute vifs using generalised inverse?
-#' Only when M is data matrix.
-#' @param prn Logical. Should the function print the results?
-#' @param digits. Number of decimal figures to print and return. See details.
-#' @details A wrapper for vifSC in C++. May run into problems if the variables
-#' are perfectly multicollinear, in that case use \code{pseudo = TRUE}.  
-#' Vifs values are named with \code{colnames(M)}. 
-#' If \code{digits} is 0, loadings are returned unrounded and printed (if enabled) 
-#' to two digits. If \code{digits} > 0, loadings are returned rounded to that value.
-#' @return A list of ordered vifs for each component.
-# was method for class. no need
+# \strong{Computes variance inflaction factors for variables in spca components.}
+# 
+# result provided by SPCA
+# 
+# @param spca_obj An spca object, typically from SPCA.
+# @param M the data or covariance/correlation matrix
+# @param intercept Logical: should the intercept be included in the model?
+# @param pseudo, should compute vifs using generalised inverse?
+# Only when M is data matrix.
+# @param prn Logical. Should the function print the results?
+# @param digits. Number of decimal figures to print and return. See details.
+# @details A wrapper for vifSC in C++. May run into problems if the variables
+# are perfectly multicollinear, in that case use \code{pseudo = TRUE}.
+# Vifs values are named with \code{colnames(M)}.
+# If \code{digits} is 0, loadings are returned unrounded and printed (if enabled)
+# to two digits. If \code{digits} > 0, loadings are returned rounded to that value.
+# @return A list of ordered vifs for each component.
+# # was method for class. no nee
 
 make_vif_R = function(spca_obj, M, intercept = FALSE, pseudo = FALSE, 
                          prn = TRUE, digits = 0){

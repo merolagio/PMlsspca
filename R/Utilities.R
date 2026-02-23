@@ -198,28 +198,29 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
 #   cowplot::plot_grid(sc, wc)
 # }
 
-#' Rounds  a list
-#'
-#' prints or return a rounded list
-#'
-#' @param li a list of numerical objects
-#' @param d nuber of digits
-#' @return rounded list
+# Rounds  a list
+#
+# prints or return a rounded list
+#
+# @param li a list of numerical objects
+# @param d nuber of digits
+# @return rounded list
 roundl = function(li, d = 2) lapply(li, round, digits = d)
 
 
-#' Change the sign of selected sparse components
-#'
-#' Multiplies by \eqn{-1} the loadings, contributions, and (when present) scores and
-#' component-correlation entries for the components listed in `index_to_change`.
-#' This is useful because (sparse) principal components are defined up to sign.
-#'
-#' @param spca_obj An object of class `spca`.
-#' @param index_to_change Integer vector of component indices whose sign should be flipped.
-#'
-#' @return The modified `spca_obj`, with the selected components sign-flipped.
-#'
-#' @export
+# Change the sign of selected sparse components
+#
+# Multiplies by \eqn{-1} the loadings, contributions, and (when present) scores and
+# component-correlation entries for the components listed in `index_to_change`.
+# This is useful because (sparse) principal components are defined up to sign.
+#
+# @param spca_obj An object of class `spca`.
+# @param index_to_change Integer vector of component indices whose sign should be flipped.
+#
+# @return The modified `spca_obj`, with the selected components sign-flipped.
+#
+# @noRd
+# @export
 changeSign_loads_spca = function(spca_obj, index_to_change){
   
   n = length(index_to_change)
@@ -243,15 +244,15 @@ changeSign_loads_spca = function(spca_obj, index_to_change){
 
 
 
-#' makes VIF for an spca object
-#'
-#' experimental use with care, uses only vifSC because vifXC  slow
-#'
-#' @param spca_obj surprisingly, an spca object
-#' @param M data matrix or variance/correlation matrix (same result)
-#' @param intercept if include intercept, use TRUE only for data matrix not centered.
-#'
-#' @return a list of vectors with vif values for each component
+# makes VIF for an spca object
+#
+# experimental use with care, uses only vifSC because vifXC  slow
+#
+# @param spca_obj surprisingly, an spca object
+# @param M data matrix or variance/correlation matrix (same result)
+# @param intercept if include intercept, use TRUE only for data matrix not centered.
+#
+# @return a list of vectors with vif values for each component
 make_vif.spca = function(spca_obj, M, intercept = FALSE){
   stopifnot(any(class(spca_obj) == "spca"))
   if(is.null(colnames(M))){
@@ -286,3 +287,5 @@ makevec = function(vec, n){
     v = vec
   return(v)
 }
+
+anyna = function(x) any(is.na(x))
