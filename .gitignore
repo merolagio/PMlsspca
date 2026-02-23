@@ -1,0 +1,16 @@
+.Rproj.user
+.Rdata
+*Compile_output*.txt
+*Rcpp_Output*.txt
+Github_commands.R
+remove_test.R
+Ignore
+.Rhistory
+.httr-oauth
+.DS_Store
+.quarto
+*.o
+*.so
+*.dll
+*.a
+*.d
