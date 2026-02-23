@@ -53,30 +53,3 @@ variance explained.
 This is a wrapper for the main function in which the "dots" are disabled
 so that only exact (or partial) prescribed arguments can be entered.
 }
-\examples{
-
-\dontrun{
-### example print.spca ========
-library(SPCA3)
-data("hitters_cor")
-
-## Four uncorrelated spca components each explaining 95\% of PC's vexp
-hit_spca = SPCA(M = hitters_cor, alpha = 0.95, ncomps = 4)
-
-## default print. Prints the nonzero \% contributions with 1 decimal
-print(hit_spca)
-
-## Prints the all loadings with 2 decimals
-print(hit_spca, only.nonzero = FALSE, digits = 2, perc = F)
-
-## Prints the nonzero \% contributions without decimals 
-## (since \% values it means 2 digits)
-print(hit_spca,  digits = 2)
-
-## prints contributions larger than 25\%
-print(hit_spca,  thresh = 0.25)
-}
-}
-\seealso{
-Examples in \link{spcabb} and \link{spcabe}.
-}

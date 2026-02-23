@@ -7,31 +7,35 @@
 \method{summary}{spca}(
   spca_obj,
   cols,
-  perc = TRUE,
+  contribution = TRUE,
+  variance_metrics = "cumulative_relative",
+  minload = FALSE,
   rtn = FALSE,
   prn = TRUE,
-  thrsehcard = 0.001,
-  ...
+  thrsehcard = 0.001
 )
 }
 \arguments{
-\item{cols}{A vector indicating which components should be included. Default
-all.  If an iteger is passed, it is set to 1:cols.}
+\item{spca_obj}{An spca object.}
 
-\item{perc}{Logical: should the laodings be standardised to unit L1 norm
+\item{cols}{A vector indicating which components should be included. Default
+all. If an integer is passed, it is set to 1:cols.}
+
+\item{contribution}{Logical: should the loadings be standardised to unit L1 norm
 (and printed as percentage contributions)}
 
-\item{rtn}{Logical: should the summary matrix of summaries be returneded?}
+\item{variance_metrics}{Character vector: which variance metrics to include.
+Options: "relative" (RVEXP), "cumulative_relative" (RCVEXP), "both", or "none".
+Default is "cumulative_relative".}
 
-\item{prn}{Logical: should anything be printed? Takes priority on prnload.}
+\item{minload}{Logical: should minimum loading/contribution be included?}
+
+\item{rtn}{Logical: should the summary matrix be returned?}
+
+\item{prn}{Logical: should anything be printed?}
 
 \item{thrsehcard}{Value below which loadings are considered zero and not
 counted in the cardinality}
-
-\item{...}{Additonal arguments for generic summary, additional arguments will
-generate an error.}
-
-\item{object}{An spca object.}
 }
 \value{
 If rtn = TRUE, a numerical matrix with the summaries.
@@ -47,34 +51,11 @@ returned is a numerical matrix.
 For each component the following summaries are computed: \tabular{ll}{ 
 VEXP\tab The percentage variance explained\cr
 CVEXP \tab The percentage cumulative variance explained\cr
-RCVEXP \tab The percentage cumulative variance explained relative to that of the corresponding principal components\cr
+RVEXP \tab The variance explained relative to the corresponding PC\cr
+RCVEXP \tab The cumulative variance explained relative to the corresponding PCs\cr
 Card \tab The cardinality, that is the number of non zero loadings\cr
-Ccard \tab The cumulative cardinality.\cr
-VEXP/Card \tab The percentage variance explained over the cardinality.\cr
-CVEXP/Ccard \tab The percentage cumulative variance explained over the cumulative cardinality.\cr
-Converged \tab If the object was computed with \emph{spcabe}, type of convergence: 0 if all loadings bigger than \emph{thresh}, 1 if minimal cardinality reached or 2 if the maximal variance loss in trimming was reached.\cr
-MinLoad \tab Minimum absolute value of the non-zero loadings. }
-If perc = TRUE, the last row gives the minimum absolute percentage contribution, MinPContr.
-}
-\note{
-This is a wrapper for the main function in which the "dots" are disabled
-so that only exact (or partial) prescribed arguments can be entered.
-}
-\examples{
-
-\dontrun{
-library(SPCA3)
- data("hitters_cor")
-
-hit_spca = SPCA(M = hitters_cor, alpha = 0.95, ncomps = 4, mincard = 1,
-                maxcard = 16, ncompbyvexp = 0.5, method = "c", checkrank = TRUE)
-## default summaries
-summary(hit_spca)
-
-## summaries of 1st, 3rd and 4th columns showing minimum loadings
-summary(hit_spca, cols = c(1, 3, 4), perc = FALSE)
-}
+MinLoad/MinCont \tab Minimum absolute value of the non-zero loadings or contribution }
 }
 \seealso{
-Examples in \code{\link{SPCA}, \link{spcabe}}
+Examples in \code{\link{lsspca}}.
 }

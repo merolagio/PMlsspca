@@ -46,9 +46,8 @@ component over the cumulative variance explained by the corresponding PCs.}
 }
 }
 \description{
-Useful for creating an object with stanrd PCA loadings of class \code{spca}
-which can run on the spca utilities. Other more comprehensive functions
-for PCA exist in R, such as \code{princomp}, for example.
+Creates PCA output as an \link{PMlsspca-package} object
+which can run on the spca utilities. .
 }
 \details{
 \emph{ncomps} is just the number of components retained from the full eigen
@@ -56,12 +55,7 @@ decomposition, doesn't speed up the function. \emph{only.values} does not
 compute the loadings and is more efficient. Kaiser rule determines the
 number of components as the number of eigenvalues larger than one. It should
 be used only for correlation matrices, if called on a covariance matrix a
-warning is generated.
-}
-\examples{
- \dontrun{ 
-
-}
+warning is generated. Note, the Kaiser rule is justified only for the number of factors in Factor Analysis.
 }
 \seealso{
 See also \code{\link{print.spca}, \link{summary.spca}}

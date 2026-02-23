@@ -18,12 +18,10 @@ showload(
 \item{spca_obj}{A list of spca objects, typically from SPCA.  It
 can also be a simple matrix of loadings.}
 
-\item{cols}{A vector containg the indices of the loadings to be shown.  Can
-be a single value. if missing all loadings are shown: If an integer is
+\item{cols}{A vector containg the indices of the loadings to be shown.  Can be a single value. if missing all loadings are shown: If an integer is
 passed, only that dimension will be returned.}
 
-\item{perc}{Logical: should the loodings be standardised to unit \eqn{L_1}
-norm (and printed as percentage contributions).}
+\item{perc}{Logical: should the loodings be standardised to unit \eqn{L_1} norm (and printed as percentage contributions).}
 
 \item{digits}{Number of decimal digits to show.}
 
@@ -31,8 +29,7 @@ norm (and printed as percentage contributions).}
 
 \item{thresh}{Loadings with absolute value below this are considered zero.}
 
-\item{rtn}{Logical: should the text table of loadings and the matrix of
-summaries be returneded?}
+\item{rtn}{Logical: should the text table of loadings and the matrix of summaries be returneded?}
 }
 \value{
 If rtn = TRUE, it returns a list with the loadings.
@@ -46,6 +43,5 @@ variablesnames must have the names of the p variables in the first p
 positions.
 }
 \seealso{
-\link{print.spca}, \link{plot.spca}. Examples in
-\code{\link{SPCA}}
+\link{PMlsspca-package}.
 }

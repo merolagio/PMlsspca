@@ -2,7 +2,7 @@
 % Please edit documentation in R/Methods_For_Class.R
 \name{plot.spca}
 \alias{plot.spca}
-\title{\strong{Plots loadings from an spca object}}
+\title{\strong{Plot loadings or contributions from an `spca` object}}
 \usage{
 \method{plot}{spca}(
   spca_obj,
@@ -10,7 +10,15 @@
   plotcontributions = TRUE,
   onlynonzero = TRUE,
   varnames = TRUE,
-  circular = TRUE,
+  vargroups = NULL,
+  plottitle = NULL,
+  stripnames = NULL,
+  adjustLabelsCirc = NULL,
+  plottype = c("bars", "circular", "tiles"),
+  plotgrid = c(TRUE, "h"),
+  legendPosition = c("bottom", "right", "top", "left"),
+  legendTitle = NULL,
+  vert = FALSE,
   pcloadings = NULL,
   colourscale = c("cbb", "printsafe", "bw", "ggplot"),
   returnplot = FALSE,
@@ -18,92 +26,80 @@
 )
 }
 \arguments{
-\item{spca_obj}{An spca object.}
+\item{spca_obj}{An object of class `spca`.}
 
-\item{nplot}{The number of components to be plotted. Default all. If an
-itenger is passed, it is set to 1:nplot.}
+\item{nplot}{Integer. Number of components to plot. Defaults to `spca_obj$ncomps`.
+If a single integer is passed, components `1:nplot` are plotted.}
 
-\item{plotcontributions}{Logical: should the loading be scaled as percentages?}
+\item{plotcontributions}{Logical. If `TRUE`, plots contributions (typically scaled to
+sum to 100\% within each component); otherwise plots raw loadings.}
 
-\item{onlynonzero}{Logical: should only the non-zero loadings be plotted?}
+\item{onlynonzero}{Logical. If `TRUE`, plots only nonzero entries.}
 
-\item{varnames}{Hybrid: if TRUE the variable names from the laoding matrix are added to the plot. 
-If a vector with the names is passed, those names are used as labels, if FALSE no labels
-are added.}
+\item{varnames}{Logical or character. If `TRUE`, uses row names of the loading matrix
+(or `VAR1, ..., VARp` if missing). If a character vector of length `p` is supplied,
+it is used as the variable labels. If `FALSE`, variable labels are omitted.}
 
-\item{circular}{If TRUE a circular barplot is produced. Otherwise a linear one.}
+\item{vargroups}{Optional factor/character vector of length `p` defining groups of
+variables. If provided, bars/tiles are colored by group instead of by component.}
 
-\item{pcloadings}{An spca object containing the PCA loadings, typically obtained
-with the function pca.}
+\item{plottitle}{Optional character. Plot title (added with `labs(title = ...)`).}
 
-\item{returnplot}{Logical, if the plot must be returned}
+\item{stripnames}{Optional character vector of facet strip labels for components.
+Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.}
 
-\item{produceplot}{Logical, if the plot is to be plotted (useful when only 
-the plot needs to be retuned)}
+\item{adjustLabelsCirc}{Optional numeric vector of length `nplot`. Additive adjustment
+(in degrees) to the component label angles in circular bar plots.}
 
-\item{colorscale}{can take values c("cbb", "printsafe", "bw", "ggplot")
-or a pallettte with colour codes. See details for explanation.}
+\item{plottype}{Character. Plot type: `"bars"`, `"circular"`, or `"tiles"`. Partial
+matching is supported via the first letter (e.g., `"b"`, `"c"`, `"t"`).}
+
+\item{plotgrid}{Logical or character. If `FALSE`, removes the background grid. If `"h"`,
+keeps only horizontal grid lines. If `TRUE`, uses the default grid.}
+
+\item{legendPosition}{Character or numeric. Legend position. Can be one of
+`"bottom"`, `"right"`, `"top"`, `"left"`, or a numeric vector of length 2 giving
+coordinates inside the panel. For circular plots, the legend is placed on the right.}
+
+\item{legendTitle}{Optional character. Legend title for the fill aesthetic.}
+
+\item{vert}{Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).}
+
+\item{pcloadings}{Optional numeric matrix of PCA loadings (or PCA contributions) with
+the same dimensions as `spca_obj$loadings`. If supplied, SPCA and PCA values are
+plotted together for comparison (not available for `plottype = "circular"`).}
+
+\item{colourscale}{Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,
+`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette
+is applied to groups; otherwise it is applied to components/methods.}
+
+\item{returnplot}{Logical. If `TRUE`, returns the `ggplot2` object.}
+
+\item{produceplot}{Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when
+only returning the `ggplot2` object.}
 }
 \value{
-If returnplot = TRUE the ggplot2 object
+If `returnplot = TRUE`, the `ggplot2` object; otherwise `NULL` (invisibly).
 }
 \description{
-Plots loadings from an spca solutions.
+Plots the sparse loadings (or the corresponding percent contributions) stored in an `spca` object. Plots can be produced as linear bar plots, circular bar plots, or a
+tile heat map. For large problems, it is recommended to set `onlynonzero = TRUE` and
+`varnames = FALSE`.
 }
 \details{
-The loadings are plotted as circular or linear barplots. For large
-matrices it is reccommended to set onlynonzero = TRUE and variablesnames = FALSE. 
-The sparse loadings can be plotted together with the PC's for comparison.
+If `pcloadings` is provided, the plot overlays SPCA and PCA values for comparison
+(circular bar plots with PCA are not implemented; standard bar plots are used instead).
 
-colourscaler takes \emph{cbb} for colorblind (with black) friendly, 
-\emph{printsafe} for colourblind and printer friendly, \emph{bw} for gray tones and 
-\emph{ggplot} for the default ggplot2 scale. A vector with colour hexadecimal RGB 
-codes can be passed.
-}
-\examples{
 
-\dontrun{
-library(SPCA3)
-data("hitters_cor")
-
-## Four uncorrelated spca components each explaining 95\% of PC's vexp
-hit_spca = SPCA(M = hitters_cor, alpha = 0.95, ncomps = 4)
-
-## plot circular barplots of all SPCA contributions 
-## with colourblind friendly colours
-plot(hit_spca, nplot = 4, 
-     onlynonzero = FALSE, 
-     colourscale = "cbb"
-    )
-
-## plot circular barplots of nonzero SPCA contributions with printer safe colours
-plot(hit_spca, nplot = 4, 
-     colourscale = "printsafe"
-    )
-
-## plot linear barplots of nonzero SPCA contributions with custom colours
-Set1 = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
-         "#A65628", "#F781BF", "#999999")#, brewer
-plot(hit_spca, nplot = 4, 
-     circular = FALSE, 
-     colourscale = Set1
-    )
-
-## plot SPCA and PCA contributions for 3 components and ggplot2 colours
-hit_ee = eigen(hit_c) ## loadings PCA
-plot(hit_spca, nplot = 3, 
-     colourscale = "ggplot",
-     pcloadings = hit_ee$vectors
-     ) 
-}
+`colourscale` options: `"cbb"` is colorblind-friendly (with black), `"printsafe"` is
+colorblind- and printer-friendly, `"bw"` uses gray tones, and `"ggplot"` uses the
+default ggplot2 scale. A custom vector of hex RGB colors can also be supplied.
 }
 \references{
-The circular barplots I discovered on the \emph{r-graph-gallery} 
-website \url{https://www.r-graph-gallery.com/all-graphs/}. The cbb colur pallette I found on
-the \emph{cookbook-r} website, \url{http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/}. The 
-printsafe pallette is the OrRd from the colorbrewer2 website \url{http://colorbrewer2.org/}
+Circular bar plot layouts follow examples from \url{https://www.r-graph-gallery.com/all-graphs/}.
+The `cbb` palette is adapted from \url{http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/}.
+The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
 }
 \seealso{
-Examples in \code{\link{spcabe}} and \code{\link{spcabb}}. For plotting two or
-more spca solutions together see \code{\link{compare}}.
+\code{\link{lsspca}}.
 }
