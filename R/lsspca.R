@@ -1,45 +1,39 @@
 
 
 # tutorial 2025
-#added force in/out/selfromthese
-# using leaps: Maybe adding my routines?
-## requires C func for matrix comp
+## requires C++ func for matrix comp =================P
 
-## get  from utilities
-## makevec from utilities
-## make_vif_R
-## based on spcaTutoPack select_subset
-
-# in details warn that if 
-
-
-#' Computes LS SPCA using different selection methods 
+#lsspca=====================
+#' \strong{Computes LS SPCA using different selection methods}
 #' 
 #' For each component, the variables are selected so as to explain
 #' a percentage \emph{alpha} of the vexp by the corresponding principal component.
-#' @param X data frame or matrix with data. 
-#' @param alpha = 0.95. Real in [0,1] (optional if ncbyvexp < 1). Percentage of variance of the PCs explained by the sparse component. 
+#' @param X dataframe or matrix with data. 
+#' @param alpha = 0.95. Real in [0,1] (optional if ncbyvexp < 1). Minimum \code{R^2} of the regression of the residual PC for variable selection. 
 #' @param ncomps = 0 Number of components to compute (if passed 0, reset to the number of variables)
 #' @param ncbyvexp = 1 (optional if ncomps < 1) real in [0, 1] compute components until this fraction of total vexp explained. whichever satisfied first ncomps.
-#' @param method how lsspca is computed
-#' @param subset search one of "stepwise", "backward" or "forward". Default "stepwise".
+#' @param method a character vector, one of  "p", "c", "u", specifying how the lsspca loadings are computed for each component. The last value will be applied to all remaining components.
+#' @param  varselection one of "stepwise", "backward" or "forward". Default "stepwise".
 #' @param maxcard integer (optional) a vector or one integer. Missing values filled with last value.
-#' @param force_in NULL or list or vector of indices must be in component. not for lasso. [NULL]
-#' @param force_out NULL or list or vector of indices cannot be in component. [NULL] 
-#' @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected by each component
+#' @param force_in NULL or list or vector of indices must be in component. 
+#' @param force_out NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component
 #' @param scalex = FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
+#' @details
+#' \code{\alpha} controls the $R^2$ 
+#' 
 #' @return an spca object
 #' @export
-
-
 lsspca =
-  function (X, alpha = 0.95, ncomps = 0, ncbyvexp = 1, method = c("p", "c", "u"), subsearch = c("stepwise", "backward", "forward"), maxcard = 0, force_in = NULL, force_out = NULL, scalex = FALSE, mkvif = FALSE) 
+  function (X, alpha = 0.95, ncomps = 0, ncbyvexp = 1, method = "p", varselection = c("stepwise", "backward", "forward"), maxcard = 0, force_in = NULL, force_out = NULL, scalex = FALSE, mkvif = FALSE) 
   {
-    if(is.data.frame(X)) X = as.matrix(X)
-    p = ncol(X)
-    n = nrow(X)
+  
+  if(is.data.frame(X)) X = as.matrix(X)
+  p = ncol(X)
+  n = nrow(X)
 
+  
 ## validation ============================
+  
     
     if (ncomps == 0) {
       if ((ncbyvexp == 1)) 
@@ -49,6 +43,10 @@ lsspca =
     else {
       ncbyvexp = 1
     }
+  # fills method up to p
+  if (length(method) < p)
+    method = makevec(method, p)
+  
     if (is.vector(maxcard)) {
       maxcard[maxcard == 0] = p
       if (length(maxcard) < ncomps) 
@@ -58,15 +56,14 @@ lsspca =
     else {
       stop("must pass a vector or an integer as maxcard")
     }
-    ssearch = stringr::str_sub(subsearch[1], 1, 1)
-    if (is.null(subsearch)) 
-      stop("need to pass a valid search type")
-    subsearch = switch(ssearch, b = "backward", f = "forward", s = "seqrep")
-    
-    if(!(method[1] %in% c("p", "c", "u"))){
-      stop("method must be one of p, c or u, see function documentation")
-    }
-    method = method[1]
+    ssearch = substr(varselection[1], 1, 1)
+    varselection = switch(ssearch,
+                        b = "backward",
+                        f = "forward",
+                        s = "seqrep",
+                        stop("varselection must be one of s, f, or b")
+    )
+
 
 # converts force in/out to lists =========================
 # at the end check content of of each to avoid weird   
@@ -114,7 +111,7 @@ lsspca =
     scores = matrix(0, n, ncomps)
     colnames(scores) = paste0("PC", 1:ncomps)
     
-    if (method[1] == "u") 
+    if (any(method == "u"))
       R = matrix(0, p, ncomps)
     
     K = X
@@ -163,7 +160,7 @@ lsspca =
       
       ##Reg search=================  
       # leaps search
-      ssr = leaps::regsubsets(x = Xd, y = pc, method = subsearch[1], nbest = 1, force.in = force_in_Xd, nvmax = maxcard[j], intercept = FALSE
+      ssr = leaps::regsubsets(x = Xd, y = pc, method = varselection[1], nbest = 1, force.in = force_in_Xd, nvmax = maxcard[j], intercept = FALSE
       )# THIS is ok coz pc from K
       
       aa = leaps:::summary.regsubsets(ssr)
@@ -180,8 +177,8 @@ lsspca =
           
         }
         else{
-          if (method == "u") 
-            indmodel = which((aa$rsq >= alpha) & ((1:length(aa$rsq)) >= j))
+          if (method[j] == "u") 
+            indmodel = which((aa$rsq >= alpha) & ((1:length(aa$rsq)) >= j))[1]
           else
             indmodel = which(aa$rsq > alpha)[1]
           
@@ -200,7 +197,7 @@ lsspca =
 #Only need compute loadings if more than one variable selected        
         if (length(ind[[j]]) > 1) {
           Sd = ataC(Xd)
-          if (method == "u") {
+          if (method[j] == "u") {
             if (j == 1) {
               M = aatC(crossprod(Xd, X))
               ga = GenEigenC(M, Sd)
@@ -233,19 +230,19 @@ lsspca =
                 }#end else chck prod mat singular
               }#end else chck Sd singular
             }#end "u"
-            }#end method = u
-          if((method != "u") | uspcafail) {#this don't need
+            }#end method[j] = u
+          if((method[j] != "u") | uspcafail) {#this don't need
 # CSPCA            
-            if ((method == "c") | uspcafail) {
+            if ((method[j] == "c") | uspcafail) {
               M = ataC(atbC(K, Xd))
               ga = GenEigenC(M, Sd)
               a = ga$vec[, 1]
-            }#end method = c
+            }#end method[j] = c
 # PSPCA already done in search, actually
-          if ((method == "p") & !(ssearch == "l")) {
+          if ((method[j] == "p")) {
               alm = lm(pc ~ Xd - 1)
               a = alm$coefficients
-            }#end method p
+            }#end method[j] p
           }
         }#end compute loadings 
 
@@ -317,7 +314,7 @@ lsspca =
                method = method
                )
     if (ncomps > 1) {
-      if (method[1] != "u") {
+      if (any(method[j] != "u")) {
         out$corComp = MkCorCompMat(A[, 1:ncomps], cor(X), d = ncomps)
       }
     }
