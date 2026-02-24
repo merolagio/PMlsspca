@@ -19,9 +19,9 @@
 #' @param force_out NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component
 #' @param scalex = FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
 #' @details
-#' \code{\alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.  
+#' \code{alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.  
 #' 
-#' @return an spca object
+#' @return an \code{\link{spca_object}}.
 #' @export
 lsspca =
   function (X, alpha = 0.95, ncomps = 0, ncbyvexp = 1, method = "p", varselection = c("stepwise", "backward", "forward"), maxcard = 0, force_in = NULL, force_out = NULL, scalex = FALSE, mkvif = FALSE) 
