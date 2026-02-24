@@ -40,12 +40,12 @@ lsspca(
 \item{scalex}{= FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.}
 }
 \value{
-an spca object
+an \code{\link{spca_object}}.
 }
 \description{
 For each component, the variables are selected so as to explain
 a percentage \emph{alpha} of the vexp by the corresponding principal component.
 }
 \details{
-\code{\alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.
+\code{alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.
 }

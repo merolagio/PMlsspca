@@ -29,6 +29,7 @@
 #' @importFrom Rcpp evalCpp
 NULL
 
+#spca object=================
 #' Sparse principal components object
 #'
 #' Objects of class \code{"spca"} are returned by \code{\link{lsspca}} (and related functions). They store sparse loadings, scores, and summary quantities for the selected components.
