@@ -7,7 +7,7 @@
 #' @importFrom ggplot2 scale_y_discrete scale_y_continuous scale_x_discrete scale_x_continuous 
 #' @importFrom ggplot2 scale_fill_manual scale_fill_grey scale_fill_gradientn xlab ylab
 #' @importFrom ggplot2 facet_wrap facet_grid vars
-#' @importFrom ggplot2 annotate coord_polar coord_flip 
+#' @importFrom ggplot2 annotate coord_polar coord_flip rel
 #' @noRd
 NULL
 
