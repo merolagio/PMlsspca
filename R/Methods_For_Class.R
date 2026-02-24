@@ -319,9 +319,7 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' @param plotcontributions Logical. If `TRUE`, plots contributions (typically scaled to
 #'   sum to 100\% within each component); otherwise plots raw loadings.
 #' @param onlynonzero Logical. If `TRUE`, plots only nonzero entries.
-#' @param varnames Logical or character. If `TRUE`, uses row names of the loading matrix
-#'   (or `VAR1, ..., VARp` if missing). If a character vector of length `p` is supplied,
-#'   it is used as the variable labels. If `FALSE`, variable labels are omitted.
+#' @param varnames Logical or character. If `TRUE`, uses row names of the loading matrix (or `VAR1, ..., VARp` if missing). If a character vector of length `p` is supplied, it is used as the variable labels. If `FALSE`, variable labels are omitted.
 #' @param vargroups Optional factor/character vector of length `p` defining groups of
 #'   variables. If provided, bars/tiles are colored by group instead of by component.
 #' @param plottitle Optional character. Plot title (added with `labs(title = ...)`).
@@ -341,17 +339,13 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' @param pcloadings Optional numeric matrix of PCA loadings (or PCA contributions) with
 #'   the same dimensions as `spca_obj$loadings`. If supplied, SPCA and PCA values are
 #'   plotted together for comparison (not available for `plottype = "circular"`).
-#' @param colourscale Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,
-#'   `"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette
-#'   is applied to groups; otherwise it is applied to components/methods.
+#' @param colourscale Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette is applied to groups; otherwise it is applied to the components.
 #' @param returnplot Logical. If `TRUE`, returns the `ggplot2` object.
 #' @param produceplot Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when
 #'   only returning the `ggplot2` object.
 #'
 #' @details
-#' `colourscale` options: `"cbb"` is colorblind-friendly (with black), `"printsafe"` is
-#' colorblind- and printer-friendly, `"bw"` uses gray tones, and `"ggplot"` uses the
-#' default ggplot2 scale. A custom vector of hex RGB colors can also be supplied.
+#' \code{colourscale} options: '"cbb"' is colorblind-friendly (with black), `"printsafe"` is colorblind- and printer-friendly, `"bw"` uses gray tones, and "ggplot"` uses the default ggplot2 scale. A custom vector of hex RGB colors can also be supplied. For more than 7 colours use "ggplot"
 #'
 #' @return If `returnplot = TRUE`, the `ggplot2` object; otherwise `NULL` (invisibly).
 #' @seealso \code{\link{lsspca}}.
@@ -364,10 +358,7 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL,
                       stripnames = NULL, adjustLabelsCirc = NULL,
                       plottype = c("bars", "circular", "tiles"), 
-                      plotgrid = c(TRUE, "h"), legendPosition = c("bottom", "right", "top", "left"),
-                      legendTitle = NULL, vert = FALSE, pcloadings = NULL,
-                      colourscale = c("cbb", "printsafe", "bw", "ggplot"), 
-                      returnplot = FALSE, produceplot = TRUE){
+                      plotgrid = c(TRUE, "h"), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
   
   if (is.character(legendPosition[1]))
     legpo = legendPosition[1]
@@ -390,7 +381,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
                                                    colour = "black", linetype = 1),
                    strip.text = element_text(size = 18, color = "black"),
                    strip.background = element_rect(fill = "white", 
-                                                   color = "black", linetype = 1, linewidth = rel(1))
+                                                   color = "black", linetype = 1, linewidth = ggplot2::rel(1))
     ) 
   if (plotgrid[1] == FALSE)
     thisTheme = thisTheme + 

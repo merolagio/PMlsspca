@@ -33,7 +33,7 @@
 #' @details The data provided with this package are scaled to zero mean and unit variance.
 #' @keywords datasets hs
 
- 
+
 #MSSCQ data=======================
 #' Multidimensional Sexual Self-Concept Questionnaire (MSSCQ) data
 #'

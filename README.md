@@ -20,6 +20,10 @@ You can install the development version of PMlsspca from
 [GitHub](https://github.com/) with:
 
 ``` r
+# `remotes' is the lightest alternative
+install.packages("remotes")
+remotes::install_github("merolagio/PMlsspca")
+#or
 #install.packages("devtools")
 devtools::install_github("merolagio/PMlsspca")
 # or
