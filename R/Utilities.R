@@ -49,46 +49,6 @@ list2fac = function(x){
   return(factor(fa, labels = namex))
 }
 
-
-
-##scale_y_continuous(labels = scales::percent)
-
-make_colours = function(n, pal = c("cbb", "ggplot")){
-  if (grepl("^c", pal[1])){
-    cbb <- c("#000000", "#E69F00", "#56B4E9", "#009E73", 
-             "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-    if (n <= 8) 
-      cols = cbb[1:n]
-    else{
-      warnings("cannot use bcc pallette with more than 8 colours. Switch to ggplot")
-      pal = "ggplot"
-    }
-  }
-  if(grepl("^p", pal[1])){
-    if (n < 10){
-      pf.pal <- rev(c("#FFF7EC", "#FEE8C8", "#FDD49E", "#FDBB84", "#FC8D59", "#EF6548", "#D7301F", "#B30000", "#7F0000"))
-      cols = pf.pal[1:n]
-    }
-    else{
-      warnings("cannot use pf pallette with more than 8 colours. Switch to ggplot")
-      pal = "ggplot"
-    }
-  }
-  if (grepl("^g", pal[1])){
-    gg_color_hue <- function(n) {
-      hues = seq(15, 375, length = n + 1)
-      hcl(h = hues, l = 65, c = 100)[1:n]
-    }
-    cols <- gg_color_hue(n)
-  }
-  return(cols)
-}
-# make_colours(7, "p")
-# make_colours(7, "cbb")
-# make_colours(7, "gg")
-
-# pl <- pl + ggplot2::scale_fill_manual(values = make_colours(n))
-
 #' Wachter (Marchenko--Pastur) QQ plot for eigenvalues
 #'
 #' Produces a QQ-plot comparing observed eigenvalues to Marchenko--Pastur
@@ -142,14 +102,12 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
     return(pl)
 }
 
-#' Scree plot of eigenvalues
+#' \strong{Scree plot of eigenvalues}
 #'
 #' Plots the first `nplot` eigenvalues (or their proportions) against component order.
 #'
-#' @param x A numeric vector of eigenvalues, or a list containing a numeric element
-#'   named `values`.
-#' @param nplot Integer. Number of leading eigenvalues to plot; defaults to
-#'   `length(x)` (or `length(x$values)` if `x` is a list).
+#' @param x A numeric vector of eigenvalues, or a list containing a numeric element named `values`.
+#' @param nplot Integer. Number of leading eigenvalues to plot; defaults to `length(x)` (or `length(x$values)` if `x` is a list).
 #' @param perc Logical. If `TRUE`, plots proportions `x / sum(x)` and formats the
 #'   y-axis as percentages.
 #' @param ylab Character. Y-axis label.

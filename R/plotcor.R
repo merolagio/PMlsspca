@@ -193,22 +193,19 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
     ggplot2::geom_raster() + ggplot2::xlab( "") + ggplot2::ylab( "") +
     ggplot2::theme(axis.text = ggplot2::element_text(size = axis_lab_size)) #element_text(angle=90, hjust=1)
   if (bottom_axis_labels == FALSE)
-    q = q +  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) 
+    q = q +  ggplot2::theme(axis.text.x = element_blank(), axis.ticks = element_blank()) 
   if (side_axis_labels == FALSE)
     q = q +  ggplot2::theme(axis.text.y = element_blank())
   
   if (bnw == TRUE){
     q = q + ggplot2::theme_bw()  + 
-      ggplot2::scale_fill_gradient(limits = c(-1,1), high = "black", low = "white",
-                                   guide =  ggplot2::guide_legend(title ="Cor")) +
+      ggplot2::scale_fill_gradient(limits = c(-1,1), high = "black", low = "white", guide =  ggplot2::guide_legend(title ="Cor")) +
       ggplot2::theme(legend.position="bottom",
             legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
   }
   else 
     if (!(is.na(lowcol[1]) | is.na(highcol[1])))    
-      #      q = q + ggplot2::scale_fill_gradient(limits = c(-1, 1), guide =  guide_legend(title ="Cor"))
-      q = q + ggplot2::scale_fill_gradient2(limits = c(-1, 1), low = lowcol[1], high = highcol[1], 
-                                            guide = ggplot2::guide_legend(title ="Cor"))  + 
+      q = q + ggplot2::scale_fill_gradient2(limits = c(-1, 1), low = lowcol[1], high = highcol[1], guide = ggplot2::guide_legend(title ="Cor"))  + 
     ggplot2::theme(legend.position="bottom",
                    legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
   else
@@ -216,7 +213,7 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
                       guide =  ggplot2::guide_legend(title ="Cor"))  + 
     ggplot2::theme(legend.position="bottom",
                    legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
-
+  
   if (separate_groups > 0){
     hline_df = data.frame(y = yM[-1], yend = yM[-1], x = 0.5, xend = p +0.5) 
     q = q + ggplot2::geom_segment(inherit.aes = FALSE, data = hline_df, aes(x = x, xend = xend, y = y, yend = yend),  linewidth = separate_groups)
@@ -225,7 +222,7 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
     vline_df = data.frame(x = xmm, y = rep(0.5, nvlines), yend = rep(p, nvlines) + 0.5)
     
     q <- q +  ggplot2::geom_segment(inherit.aes = FALSE, data = vline_df, aes(x = x, xend = x, y = y, yend = yend),  colour= group_sepline, lwd = separate_groups)
-
+    
     if (subgroups[[1]][1] != FALSE){
       if (!is.list(subgroups) && length(subgroups) < p)
         subgroups = list(subgroups, (1:p)[-subgroups])
@@ -246,35 +243,35 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
           message("cannot add block names, too few or too many")
           group_names = NA
         }
-      
-      else{ 
-        if(add_group_names){
-          st = c(0, cumsum(nvar)[-nblocks]) + 0.5
-        hjustb = 0
-        if (is.list(ind_list)){
-          st = sapply(ind_list, mean)
-          hjustb = 0.5
+        
+        else{ 
+          if(add_group_names){
+            st = c(0, cumsum(nvar)[-nblocks]) + 0.5
+            hjustb = 0
+            if (is.list(ind_list)){
+              st = sapply(ind_list, mean)
+              hjustb = 0.5
+            }
+            top_y <- tail(levels(dat$Var2), 1)
+            
+            q <- q +
+              ggplot2::annotate(
+                "text",
+                x = st, y = top_y,
+                label = group_names,
+                hjust = hjustb,
+                vjust = -0.6 + group_names_vjust,
+                size = group_names_size,
+                fontface = group_names_face
+              )
+            if (expandTop[1] > 0)
+              q = q +  scale_y_discrete(expand = expansion(mult = c(0.01, expandTop)))
+            
+            
+            if(clipPlotOff) q <- q + ggplot2::coord_cartesian(clip = "off")
+          }
         }
-        top_y <- tail(levels(dat$Var2), 1)
-
-          q <- q +
-            ggplot2::annotate(
-              "text",
-              x = st, y = top_y,
-              label = group_names,
-              hjust = hjustb,
-              vjust = -0.6 + group_names_vjust,
-              size = group_names_size,
-              fontface = group_names_face
-            )
-          if (expandTop[1] > 0)
-            q = q +  scale_y_discrete(expand = expansion(mult = c(0.01, expandTop)))
-        
-        
-        if(clipPlotOff) q <- q + ggplot2::coord_cartesian(clip = "off")
       }
-      }
-    }
     }
   }
   if (bottom_axis_labels == FALSE)
@@ -286,14 +283,13 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
     q = q +  ggplot2::theme(axis.text.y = element_blank())
   
   if (addlabels == TRUE){
-   myf = function(x) ifelse (rev(x) < thresholdFontColLabels, "black", "white")
+    myf = function(x) ifelse (rev(x) < thresholdFontColLabels, "black", "white")
     mic = apply(t(S), 2, myf)
     myl = function(x) round(rev(x), 1)
     labs =  apply(S, 1, myl)
-    q = q + geom_text(aes(x = rep(1:p, each = p), y = rep(1:p, p), label = c(labs)), 
-                      colour = c(mic), size = label_size, fontface = label_face)
+    q = q + ggplot2::geom_text(aes(x = rep(1:p, each = p), y = rep(1:p, p), label = c(labs)),  colour = c(mic), size = label_size, fontface = label_face)
   }
-  q = q + theme(panel.background = element_rect(fill = "white", 
+  q = q + ggplot2::theme(panel.background = element_rect(fill = "white", 
                                                 colour = "black", linetype = 1))
   if (plt == TRUE)
     print(q)

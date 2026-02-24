@@ -27,9 +27,9 @@ lsspca(
 
 \item{ncbyvexp}{= 1 (optional if ncomps < 1) real in [0, 1] compute components until this fraction of total vexp explained. whichever satisfied first ncomps.}
 
-\item{method}{a character vector, one of  "p", "c", "u", specifying how the lsspca loadings are computed for each component. The last value will be applied to all remaining components.}
+\item{method}{a character vector, one of "p", "c", "u", specifying how the lsspca loadings are computed for each component. The last value will be applied to all remaining components.}
 
-\item{varselection}{one of "stepwise", "backward" or "forward". Default "stepwise".}
+\item{varselection}{one of "stepwise", "backward" or "forward". Default "stepwise". Initial letter enough.}
 
 \item{maxcard}{integer (optional) a vector or one integer. Missing values filled with last value.}
 
@@ -47,5 +47,5 @@ For each component, the variables are selected so as to explain
 a percentage \emph{alpha} of the vexp by the corresponding principal component.
 }
 \details{
-\code{\alpha} controls the $R^2$
+\code{\alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.
 }

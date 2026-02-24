@@ -31,7 +31,7 @@
 #' compute the loadings and is more efficient. Kaiser rule determines the
 #' number of components as the number of eigenvalues larger than one. It should
 #' be used only for correlation matrices, if called on a covariance matrix a
-#' warning is generated. Note, the Kaiser rule is justified only for the number of factors in Factor Analysis.
+#' warning is generated. 
 # 
 #' @export pca
 #' @seealso See also \code{\link{print.spca}, \link{summary.spca}}

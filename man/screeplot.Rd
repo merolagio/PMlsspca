@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utilities.R
 \name{screeplot}
 \alias{screeplot}
-\title{Scree plot of eigenvalues}
+\title{\strong{Scree plot of eigenvalues}}
 \usage{
 screeplot(
   x,
@@ -15,11 +15,9 @@ screeplot(
 )
 }
 \arguments{
-\item{x}{A numeric vector of eigenvalues, or a list containing a numeric element
-named `values`.}
+\item{x}{A numeric vector of eigenvalues, or a list containing a numeric element named `values`.}
 
-\item{nplot}{Integer. Number of leading eigenvalues to plot; defaults to
-`length(x)` (or `length(x$values)` if `x` is a list).}
+\item{nplot}{Integer. Number of leading eigenvalues to plot; defaults to `length(x)` (or `length(x$values)` if `x` is a list).}
 
 \item{perc}{Logical. If `TRUE`, plots proportions `x / sum(x)` and formats the
 y-axis as percentages.}

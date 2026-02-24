@@ -12,14 +12,14 @@
 #' @param alpha = 0.95. Real in [0,1] (optional if ncbyvexp < 1). Minimum \code{R^2} of the regression of the residual PC for variable selection. 
 #' @param ncomps = 0 Number of components to compute (if passed 0, reset to the number of variables)
 #' @param ncbyvexp = 1 (optional if ncomps < 1) real in [0, 1] compute components until this fraction of total vexp explained. whichever satisfied first ncomps.
-#' @param method a character vector, one of  "p", "c", "u", specifying how the lsspca loadings are computed for each component. The last value will be applied to all remaining components.
-#' @param  varselection one of "stepwise", "backward" or "forward". Default "stepwise".
+#' @param method a character vector, one of "p", "c", "u", specifying how the lsspca loadings are computed for each component. The last value will be applied to all remaining components.
+#' @param  varselection one of "stepwise", "backward" or "forward". Default "stepwise". Initial letter enough.
 #' @param maxcard integer (optional) a vector or one integer. Missing values filled with last value.
 #' @param force_in NULL or list or vector of indices must be in component. 
 #' @param force_out NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component
 #' @param scalex = FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
 #' @details
-#' \code{\alpha} controls the $R^2$ 
+#' \code{\alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.  
 #' 
 #' @return an spca object
 #' @export
@@ -43,6 +43,18 @@ lsspca =
     else {
       ncbyvexp = 1
     }
+  
+# method ------------------
+  
+  for(j in 1:length(method)){
+  ssearch = substr(method[j], 1, 1)
+  method[j] = switch(ssearch,
+                        p = "p",
+                        c = "c",
+                        u = "u",
+                        stop("method must be one of p, c, or u")
+  )
+  }
   # fills method up to p
   if (length(method) < p)
     method = makevec(method, p)
@@ -61,7 +73,7 @@ lsspca =
                         b = "backward",
                         f = "forward",
                         s = "seqrep",
-                        stop("varselection must be one of s, f, or b")
+                        stop("varselection must be one of stepwise, backward or forward")
     )
 
 

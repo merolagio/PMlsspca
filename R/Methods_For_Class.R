@@ -590,7 +590,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
         else
           pl <- pl +  ggplot2::theme(axis.ticks = element_blank(), axis.text.x = element_blank())
        if(plotcontributions)
-        pl =  pl + scale_y_continuous(labels = scales::percent)
+        pl =  pl + ggplot2::scale_y_continuous(labels = scales::percent)
        
         if (!is.null(vargroups))
           pl <- pl +  ggplot2::theme(legend.position = legpo)#"right")
@@ -606,8 +606,8 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
             theme_bw() + scale_fill_gradientn(colours = tile_pal, limits =c(-1, 1),
                                               name = ifelse(plotcontributions, "Contributions", "Loadings")) + 
             theme(legend.position = legpo)#"bottom") 
-          pl <- pl  + geom_abline(intercept = (1:nplot) + 0.5, slope = 0, colour = "grey75") +
-            geom_vline(xintercept = (1:length(unique(data_df$variable))) + 0.5, colour = "grey75") + 
+          pl <- pl  + ggplot2::geom_abline(intercept = (1:nplot) + 0.5, slope = 0, colour = "grey75") +
+            ggplot2::geom_vline(xintercept = (1:length(unique(data_df$variable))) + 0.5, colour = "grey75") + 
             theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
                   axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8))
           
