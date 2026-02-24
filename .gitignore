@@ -3,6 +3,7 @@
 *Compile_output*.txt
 *Rcpp_Output*.txt
 Github_commands.R
+inst/Shiny
 remove_test.R
 Ignore
 .Rhistory
