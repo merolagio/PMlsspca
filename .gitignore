@@ -1,5 +1,6 @@
 .Rproj.user
 .Rdata
+.Rprofile
 *Compile_output*.txt
 *Rcpp_Output*.txt
 Github_commands.R
