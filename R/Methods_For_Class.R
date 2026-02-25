@@ -319,9 +319,8 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' @param plotcontributions Logical. If `TRUE`, plots contributions (typically scaled to
 #'   sum to 100\% within each component); otherwise plots raw loadings.
 #' @param onlynonzero Logical. If `TRUE`, plots only nonzero entries.
-#' @param varnames Logical or character. If `TRUE`, uses row names of the loading matrix (or `VAR1, ..., VARp` if missing). If a character vector of length `p` is supplied, it is used as the variable labels. If `FALSE`, variable labels are omitted.
-#' @param vargroups Optional factor/character vector of length `p` defining groups of
-#'   variables. If provided, bars/tiles are colored by group instead of by component.
+#' @param varnames Logical or character vector. If `TRUE`, uses row names of the loading matrix (or `VAR1, ..., VARp`. if missing). If a character vector of length `p` is supplied, it is used as the variable labels. If `FALSE`, variable labels are omitted.
+#' @param vargroups Optional factor/character vector of length `p` defining groups of variables. If provided, bars/tiles are colored by group instead of by component.
 #' @param plottitle Optional character. Plot title (added with `labs(title = ...)`).
 #' @param stripnames Optional character vector of facet strip labels for components.
 #'   Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.
@@ -359,6 +358,25 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
                       stripnames = NULL, adjustLabelsCirc = NULL,
                       plottype = c("bars", "circular", "tiles"), 
                       plotgrid = c(TRUE, "h"), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
+  
+#validation=============
+  p = nrow(spca_obj$laodings)
+  
+  if(!(any(class(spca_obj) == "spca")))
+    stop("plot.spca requires an spca object as first argument")
+  
+  if(!(is.factor(vargroups)) && (is.vector(vargroups)))
+    vargroups = vec2fac(vargroups)
+  if(!is.NULL(vargroups)){
+   if((!is.factor(vargroups))){
+    warning("vargroups must be a character vector or a factor. Ignored.")
+    vargroups = NULL
+   }
+    if(length(vargroups) != p){
+      warning("vargroups must have length equal to the number of variables. Ignored.")
+      vargroups = NULL
+    }
+  }
   
   if (is.character(legendPosition[1]))
     legpo = legendPosition[1]
@@ -441,11 +459,6 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
   else{
     lbl <- paste0("VAR", 1:n)
     plotlab = NULL}
-  # if (!is.null(vargroups)){
-  #   if (is.list(vargroups)){
-  #     
-  #   }
-  # }
   
   
   if (is.null(stripnames))
@@ -530,7 +543,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
         ) +  labs(fill = legendTitle) +
         ggplot2::geom_abline(slope = 0, intercept = 0) 
       
-      #      if(!is.null(vargroups)){
+      #      if(!is.null(vargroups)){-
       indg = (!is.na(data_df$variable))
       minloads = tapply(X = as.numeric(data_df$id[indg]), INDEX = data_df$component[indg], min) 
       # maxloads = tapply(X = as.numeric(data_df$id[indg]), INDEX = data_df$component[indg], max) 
