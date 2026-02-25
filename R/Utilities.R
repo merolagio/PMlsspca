@@ -49,6 +49,15 @@ list2fac = function(x){
   return(factor(fa, labels = namex))
 }
 
+vec2fac = function(v){
+  u = unique(v)
+  u
+  val = rep(0, length(v))
+  for(i in 1:length(u)){
+    val[v == u[i]] = i
+  }
+  factor(val, labels = u)
+}
 #' Wachter (Marchenko--Pastur) QQ plot for eigenvalues
 #'
 #' Produces a QQ-plot comparing observed eigenvalues to Marchenko--Pastur

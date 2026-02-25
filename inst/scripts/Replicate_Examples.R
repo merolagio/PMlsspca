@@ -48,11 +48,11 @@ ms_pspcas95_load_pl
 tab_cors = round(rbind(ms_pspcas95$corComp, diag(cor(ms_pca$scores, ms_pspcas95$scores))), 2)
 tab_cors
 
-#crime=================
+#CRIME=================
 
 #load("Data/cr.RData", verbose = T)
 
-data("cr", verbose = T)
+data("cr", package = "PMlsspca")
 
 cr_p = ncol(cr)
 cr_n = nrow(cr)
