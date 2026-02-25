@@ -1,7 +1,7 @@
 Package: PMlsspca
 Type: Package
 Title: Least Squares Sparse Principal Components Analysis
-Version: 1.0.1
+Version: 1.0.2
 Date: 2026-02-12
 Author: Giovanni M. Merola
 Maintainer: <merolagio@gmail.com>
