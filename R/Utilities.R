@@ -99,7 +99,7 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
   
   if ((is.numeric(nfit_line)) && (nfit_line != 0)){
     if (nfit_line < 0) nfit_line = nplot + nfit_line 
-    pl = pl + geom_smooth(data = df[(nplot - nfit_line):nplot, ], se = F, method = "lm")
+    pl = pl + geom_smooth(data = df[(nplot - nfit_line + 1):nplot, ], se = F, method = "lm")
     }
   if(addtitle)
     pl = pl + labs(title = "wachter qq-plot") + 
