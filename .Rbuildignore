@@ -1,0 +1,15 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^Vignettes/Vignettes_html$
+^figure$
+^Ignore$
+^Vignettes$
+^.*\.md$
+^README\.rmd$
+^README\.html$
+^README_files$
+NEWS\.md
+^inst/Shiny$
+^.Rprofile$
+^\.github$
+^README\.Rmd$
