@@ -328,7 +328,7 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #'   (in degrees) to the component label angles in circular bar plots.
 #' @param plottype Character. Plot type: `"bars"`, `"circular"`, or `"tiles"`. Partial
 #'   matching is supported via the first letter (e.g., `"b"`, `"c"`, `"t"`).
-#' @param plotgrid Logical or character. If `FALSE`, removes the background grid. If `"h"`,
+#' @param plotgrid Hybrid logical or character. If `FALSE`, removes the background grid. If `"h"`,
 #'   keeps only horizontal grid lines. If `TRUE`, uses the default grid.
 #' @param legendPosition Character or numeric. Legend position. Can be one of
 #'   `"bottom"`, `"right"`, `"top"`, `"left"`, or a numeric vector of length 2 giving
@@ -354,20 +354,17 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
 #' @export
 #' @method plot spca
-plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL,
-                      stripnames = NULL, adjustLabelsCirc = NULL,
-                      plottype = c("bars", "circular", "tiles"), 
-                      plotgrid = c(TRUE, "h"), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
+plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
   
 #validation=============
-  p = nrow(spca_obj$laodings)
+  p = nrow(spca_obj$loadings)
   
   if(!(any(class(spca_obj) == "spca")))
     stop("plot.spca requires an spca object as first argument")
   
   if(!(is.factor(vargroups)) && (is.vector(vargroups)))
     vargroups = vec2fac(vargroups)
-  if(!is.NULL(vargroups)){
+  if(!is.null(vargroups)){
    if((!is.factor(vargroups))){
     warning("vargroups must be a character vector or a factor. Ignored.")
     vargroups = NULL

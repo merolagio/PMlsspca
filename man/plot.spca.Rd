@@ -15,7 +15,7 @@
   stripnames = NULL,
   adjustLabelsCirc = NULL,
   plottype = c("bars", "circular", "tiles"),
-  plotgrid = c(TRUE, "h"),
+  plotgrid = c("h", TRUE, NA),
   legendPosition = c("bottom", "right", "top", "left"),
   legendTitle = NULL,
   vert = FALSE,
@@ -51,7 +51,7 @@ Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.}
 \item{plottype}{Character. Plot type: `"bars"`, `"circular"`, or `"tiles"`. Partial
 matching is supported via the first letter (e.g., `"b"`, `"c"`, `"t"`).}
 
-\item{plotgrid}{Logical or character. If `FALSE`, removes the background grid. If `"h"`,
+\item{plotgrid}{Hybrid logical or character. If `FALSE`, removes the background grid. If `"h"`,
 keeps only horizontal grid lines. If `TRUE`, uses the default grid.}
 
 \item{legendPosition}{Character or numeric. Legend position. Can be one of
