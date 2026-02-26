@@ -10,7 +10,7 @@ ms_scalesh_names = unique(ms_lookup$scaleSH)
 
 ms_n = nrow(ms)
 ms_p = ncol(ms)
-
+rm(ms)
 ms_r = cor(ms)
 
 plotcor(ms_r, groups = ms_scalesh_fac,   separate_groups = T, axis_labels = F, add_group_names = T, expandTop = 0.05, group_names_vjust = -0.05)
@@ -52,7 +52,7 @@ tab_cors
 
 #load("Data/cr.RData", verbose = T)
 
-data("cr", package = "PMlsspca")
+data("crs", package = "PMlsspca")
 
 cr_p = ncol(cr)
 cr_n = nrow(cr)
