@@ -6,6 +6,11 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/merolagio/PMlsspca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/merolagio/PMlsspca/actions/workflows/R-CMD-check.yaml)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Project Status:
+Active](https://img.shields.io/badge/status-active-success.svg)]()
 <!-- badges: end -->
 
 The goal of PMlsspca is to help reproduce the Least Squares Sparse
