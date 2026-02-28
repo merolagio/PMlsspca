@@ -138,7 +138,8 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
   df = data.frame(order = 1:nplot,
                   eigenvalue = x[1:nplot])
   scree_pl = ggplot(df, aes(x = order, y = eigenvalue)) + geom_point(size = 2) + geom_line() + labs(y = ylab) + theme_tuto()
-  if(kaiser_line) scree_pl + ggplot2::abline(h = 1)
+  
+  if(kaiser_line) scree_pl = scree_pl + ggplot2::geom_abline(intercept = 1, slope = 0, linewidth = 1.2, linetype = 2)
   
   if(addtitle) scree_pl = scree_pl + labs(title = "screeplot") +
     theme(plot.title = element_text(hjust = 0.5))

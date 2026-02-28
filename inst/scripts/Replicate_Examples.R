@@ -16,6 +16,8 @@ rm(ms)
 ms_r = cor(ms)
 
 plotcor(ms_r, groups = ms_scalesh_fac,   separate_groups = T, axis_labels = F, add_group_names = T, expandTop = 0.05, group_names_vjust = -0.05)
+
+
 ##scree and qq plots===========
 
 msr_ee = eigen(ms_r, symmetric = T)
@@ -75,7 +77,9 @@ crhc_cor_pl = plotcor(crhc_r, rtn = T, axis_labels = F)
 
 cr_ee = eigen(cr_r)
 
-screeplot(cr_ee$values)
+screeplot(cr_ee$values, kaiser_line = T)
+
+
 wachterqq(cr_ee$values, p = ms_p, n = ms_n, cor = T, nfit_line = -3)
 
 ##PCA===============
