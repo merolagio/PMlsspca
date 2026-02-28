@@ -7,8 +7,8 @@
 screeplot(
   x,
   nplot,
-  perc = TRUE,
-  ylab = "variance explained",
+  kaiser = F,
+  ylab = "eigenvalues",
   addtitle = T,
   prn = TRUE,
   rtn = FALSE
@@ -19,9 +19,6 @@ screeplot(
 
 \item{nplot}{Integer. Number of leading eigenvalues to plot; defaults to `length(x)` (or `length(x$values)` if `x` is a list).}
 
-\item{perc}{Logical. If `TRUE`, plots proportions `x / sum(x)` and formats the
-y-axis as percentages.}
-
 \item{ylab}{Character. Y-axis label.}
 
 \item{addtitle}{Logical. If `TRUE`, adds a plot title.}
@@ -29,6 +26,8 @@ y-axis as percentages.}
 \item{prn}{Logical. If `TRUE`, prints the plot.}
 
 \item{rtn}{Logical. If `TRUE`, returns the ggplot object.}
+
+\item{kaiser_line}{Logical. If `TRUE`plots a line at y = 1.}
 }
 \value{
 If `rtn = TRUE`, a `ggplot` object; otherwise `NULL` (invisibly).

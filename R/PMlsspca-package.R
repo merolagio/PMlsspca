@@ -17,8 +17,7 @@
 #' Additional utilities include:
 #' \tabular{ll}{
 #' \code{\link{showload}} \tab prints, the nonzero loadings or contributions separatelyfor each sPC.\cr
-#' \code{\link{compare.spca}} \tab Compare multiple `spca` objects (summaries and plots).\cr
-#' \code{\link{aggregate_by_scale}} \tab Aggregate loadings/contributions by scale.\cr
+#'#' \code{\link{aggregate_by_scale}} \tab Aggregate loadings/contributions by scale.\cr
 #' }
 #'
 #' The script to replicate the examples in the article is available at

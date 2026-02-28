@@ -18,6 +18,7 @@
 #' @param force_in NULL or list or vector of indices must be in component. 
 #' @param force_out NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component
 #' @param scalex = FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
+#'  @param mkvif Logical, should variance inflation factor be computed for each variable included in a component? May slowdown.
 #' @details
 #' \code{alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.  
 #' 
@@ -175,7 +176,7 @@ lsspca =
       ssr = leaps::regsubsets(x = Xd, y = pc, method = varselection[1], nbest = 1, force.in = force_in_Xd, nvmax = maxcard[j], intercept = FALSE
       )# THIS is ok coz pc from K
       
-      aa = leaps:::summary.regsubsets(ssr)
+      aa = summary(ssr)
       mrsq = any(aa$rsq >= alpha)  
       if(mrsq){
         if(!is.null(ssr$force_in)) { #leaps moves forced in variables at the beginning
@@ -264,7 +265,7 @@ lsspca =
           if (all(a <= 0)) 
             a = -a
           scores[, j] = Xd %*% a
-          bb = cor(pc, scores[, j])
+          bb = stats::cor(pc, scores[, j])
           if (bb < 0) {
             a = -a
             scores[, j] = -scores[, j]
@@ -273,7 +274,7 @@ lsspca =
         else {
           a = 1
           scores[, j] = X[, ind[[j]]]
-          bb = cor(pc, scores[, j])
+          bb = stats::cor(pc, scores[, j])
           if (bb < 0) {
             a = -a
             scores[, j] = -scores[, j]
@@ -327,7 +328,7 @@ lsspca =
                )
     if (ncomps > 1) {
       if (any(method[j] != "u")) {
-        out$corComp = MkCorCompMat(A[, 1:ncomps], cor(X), d = ncomps)
+        out$corComp = MkCorCompMat(A[, 1:ncomps], stats::cor(X), d = ncomps)
       }
     }
     out$Call = match.call()

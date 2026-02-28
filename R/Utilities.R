@@ -117,8 +117,7 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
 #'
 #' @param x A numeric vector of eigenvalues, or a list containing a numeric element named `values`.
 #' @param nplot Integer. Number of leading eigenvalues to plot; defaults to `length(x)` (or `length(x$values)` if `x` is a list).
-#' @param perc Logical. If `TRUE`, plots proportions `x / sum(x)` and formats the
-#'   y-axis as percentages.
+#' @param kaiser_line Logical. If `TRUE`plots a line at y = 1.
 #' @param ylab Character. Y-axis label.
 #' @param addtitle Logical. If `TRUE`, adds a plot title.
 #' @param prn Logical. If `TRUE`, prints the plot.
@@ -127,7 +126,7 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
 #' @return If `rtn = TRUE`, a `ggplot` object; otherwise `NULL` (invisibly).
 #'
 #' @export
- screeplot = function(x, nplot, ylab = "eigenvalues", addtitle = T, prn = TRUE, rtn = FALSE){
+ screeplot = function(x, nplot, kaiser = F, ylab = "eigenvalues", addtitle = T, prn = TRUE, rtn = FALSE){
   
   if(missing(nplot)) nplot = length(x)
   if(is.list(x)){
@@ -139,6 +138,8 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
   df = data.frame(order = 1:nplot,
                   eigenvalue = x[1:nplot])
   scree_pl = ggplot(df, aes(x = order, y = eigenvalue)) + geom_point(size = 2) + geom_line() + labs(y = ylab) + theme_tuto()
+  if(kaiser_line) scree_pl + ggplot2::abline(h = 1)
+  
   if(addtitle) scree_pl = scree_pl + labs(title = "screeplot") +
     theme(plot.title = element_text(hjust = 0.5))
   
@@ -229,7 +230,7 @@ make_vif.spca = function(spca_obj, M, intercept = FALSE){
     M = cor(M)
   for (j in 1:spca_obj$ncomps){
     if(spca_obj$cardinality[j] > 1)
-      viff[[j]] = spcaTutoPack::vifSC(M[spca_obj$ind[[j]], spca_obj$ind[[j]]], 1:spca_obj$cardinality[j])
+      viff[[j]] = vifSC(M[spca_obj$ind[[j]], spca_obj$ind[[j]]], 1:spca_obj$cardinality[j])
   }
   for (i in 1:spca_obj$ncomps){
     names(viff[[i]]) = namx[spca_obj$ind[[i]]]

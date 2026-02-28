@@ -1,13 +1,13 @@
 
 #' @importFrom ggplot2 ggplot aes theme theme_minimal 
 #' @importFrom ggplot2 theme_light theme_bw theme_classic
-#' @importFrom ggplot2 geom_bar geom_tile geom_rect geom_line geom_point
-#' @importFrom ggplot2 geom_abline geom_vline geom_text geom_smooth
-#' @importFrom ggplot2 element_rect  element_blank element_text unit labs
+#' @importFrom ggplot2 geom_bar geom_tile geom_rect geom_line position_dodge
+#' @importFrom ggplot2 geom_abline geom_vline geom_text geom_smooth geom_point
+#' @importFrom ggplot2 element_rect  element_blank element_text unit element_line
 #' @importFrom ggplot2 scale_y_discrete scale_y_continuous scale_x_discrete scale_x_continuous 
-#' @importFrom ggplot2 scale_fill_manual scale_fill_grey scale_fill_gradientn xlab ylab
+#' @importFrom ggplot2 scale_fill_manual scale_fill_grey scale_fill_gradientn xlab ylab labs
 #' @importFrom ggplot2 facet_wrap facet_grid vars
-#' @importFrom ggplot2 annotate coord_polar coord_flip rel
+#' @importFrom ggplot2 annotate coord_polar coord_flip rel expansion 
 #' @noRd
 NULL
 
@@ -24,7 +24,6 @@ theme_tuto <- function(base_size = 12, base_family = "") {
 }
 
 
-##scale_y_continuous(labels = scales::percent)
 # make_colours(7, "p")
 # make_colours(7, "cbb")
 # make_colours(7, "gg")
@@ -55,7 +54,7 @@ make_colours = function(n, pal = c("cbb", "ggplot")){
   if (grepl("^g", pal[1])){
     gg_color_hue <- function(n) {
       hues = seq(15, 375, length = n + 1)
-      hcl(h = hues, l = 65, c = 100)[1:n]
+      grDevices::hcl(h = hues, l = 65, c = 100)[1:n]
     }
     cols <- gg_color_hue(n)
   }

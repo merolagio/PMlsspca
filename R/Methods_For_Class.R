@@ -505,7 +505,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       colnames(to_add) <- colnames(data_df)
       to_add$component <- rep(levels(data_df$component), each = empty_bar)
       data_df <- rbind(data_df, to_add)
-      data_df <- dplyr::arrange(data_df, component)
+      data_df <- data_df[order(data_df$component), ]
       data_df$id <- seq(1, nrow(data_df))
       
       # Get the name and the y position of each label
@@ -515,7 +515,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       label_data$hjust <- ifelse( angle < -90, 1, 0)
       label_data$angle <- ifelse(angle < -90, angle + 180, angle)
       
-      mval <- max(na.omit(data_df$value))
+      mval <- max(stats::na.omit(data_df$value))
       label_data$pos <- data_df$value
       label_data$pos[data_df$value == 0] <- mval * (0.66)
       label_data$pos[data_df$value < 0] <- 0.05
@@ -529,7 +529,7 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       }
       pl = pl + ggplot2::geom_bar(stat = "identity", alpha = 0.75, 
                                   color = ifelse(colourscale[1] == "printsafe", "black", NA)) +
-        ggplot2::ylim(-0.5 - median(abs(na.omit(data_df$value))), mval + 0.2) + 
+        ggplot2::ylim(-0.5 - stats::median(abs(stats::na.omit(data_df$value))), mval + 0.2) + 
         ggplot2::theme_light() +
         ggplot2::theme(
           legend.position = legpo, #"right"
@@ -544,8 +544,8 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       indg = (!is.na(data_df$variable))
       minloads = tapply(X = as.numeric(data_df$id[indg]), INDEX = data_df$component[indg], min) 
       # maxloads = tapply(X = as.numeric(data_df$id[indg]), INDEX = data_df$component[indg], max) 
-      medloads = tapply(data_df$id[indg],  INDEX = data_df$component[indg], median)
-      # medangle = tapply(angle[indg],  INDEX = data_df$component[indg], median)
+      medloads = tapply(data_df$id[indg],  INDEX = data_df$component[indg], stats::median)
+      # medangle = tapply(angle[indg],  INDEX = data_df$component[indg], stats::median)
       lia = min(data_df$value[indg]) - 0.05
       
       medangle = 360*medloads/number_of_bar
@@ -953,7 +953,7 @@ new_spca = function(A, S, X = NULL, method = NULL){
   else
     obj$corComp = MkCorCompMat(A, S)
   class(obj) = c("list", "spca")
-  obj$vif <- make_vif.spca(obj, S, prn = FALSE)
+  obj$vif <- make_vif.spca(obj, S)
   if(!is.null(method))  
     obj$method = method
   return(obj)

@@ -13,3 +13,5 @@ NEWS\.md
 ^.Rprofile$
 ^\.github$
 ^README\.Rmd$
+^Compile_output.txt$
+

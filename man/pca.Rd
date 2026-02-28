@@ -11,14 +11,18 @@ pca(
   scaledata = FALSE,
   only.values = FALSE,
   screeplot = FALSE,
+  kaiser_line = F,
   kaiser.print = FALSE
 )
 }
 \arguments{
 \item{M}{A data matrix or correlation or covariance matrix.}
 
-\item{ncomps}{Integer: number of loadings to retain. If missing all loadings are
-retained.}
+\item{ncomps}{Integer: number of loadings to retain. If missing all loadings are retained.}
+
+\item{centerdata}{= FALSE, should variables be centered to zero mean automatically done if any mean is not zero}
+
+\item{scaledata}{= FALSE , should variables be centered to unit variance?}
 
 \item{only.values}{Logical: should only the eigenvalues be computed?}
 
@@ -26,6 +30,8 @@ retained.}
 
 \item{kaiser.print}{Logical: should the kaiser rule be computed, printed and
 returned?.}
+
+\item{kaiser.line}{Logical: adds a horizontal line to the screeplot at y = 1}
 }
 \value{
 An object of class \emph{spca} is returned, which contains:
@@ -51,9 +57,7 @@ which can run on the spca utilities. .
 }
 \details{
 \emph{ncomps} is just the number of components retained from the full eigen
-decomposition, doesn't speed up the function. \emph{only.values} does not
-compute the loadings and is more efficient. Kaiser rule determines the
-number of components as the number of eigenvalues larger than one. It should
+decomposition, doesn't speed up the function. \emph{only.values} does not compute the loadings and is more efficient. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should
 be used only for correlation matrices, if called on a covariance matrix a
 warning is generated.
 }

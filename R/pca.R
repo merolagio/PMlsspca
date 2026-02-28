@@ -4,10 +4,12 @@
 #' which can run on the spca utilities. .
 #' 
 #' @param M A data matrix or correlation or covariance matrix.
-#' @param ncomps Integer: number of loadings to retain. If missing all loadings are
-#' retained.
+#' @param ncomps Integer: number of loadings to retain. If missing all loadings are retained.
+#' @param centerdata = FALSE, should variables be centered to zero mean automatically done if any mean is not zero
+#' @param scaledata = FALSE , should variables be centered to unit variance?
 #' @param only.values Logical: should only the eigenvalues be computed?
 #' @param screeplot Logical: should the screeplot be plotted?
+#' @param kaiser.line Logical: adds a horizontal line to the screeplot at y = 1 
 #' @param kaiser.print Logical: should the kaiser rule be computed, printed and
 #' returned?.
 #' @return An object of class \emph{spca} is returned, which contains:
@@ -27,17 +29,14 @@
 #' \item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE}.}
 #' }
 #' @details \emph{ncomps} is just the number of components retained from the full eigen
-#' decomposition, doesn't speed up the function. \emph{only.values} does not
-#' compute the loadings and is more efficient. Kaiser rule determines the
-#' number of components as the number of eigenvalues larger than one. It should
+#' decomposition, doesn't speed up the function. \emph{only.values} does not compute the loadings and is more efficient. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should
 #' be used only for correlation matrices, if called on a covariance matrix a
 #' warning is generated. 
 # 
 #' @export pca
 #' @seealso See also \code{\link{print.spca}, \link{summary.spca}}
 pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
-                only.values = FALSE, screeplot= FALSE, 
-                kaiser.print = FALSE){
+                only.values = FALSE, screeplot= FALSE, kaiser_line = F, kaiser.print = FALSE){
   #'######=============================================================  
   ## computes the PCA loadings with vexp, cumulative vexp and eigenvalues
   #'######=============================================================  
@@ -97,12 +96,7 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
   old.par <- par(no.readonly = TRUE) 
 
   if (screeplot == TRUE){
-    toplo = 100*ee$val/sum(ee$val)
-    par(mar = c(4, 4, 1, 1))
-    plot(1:p, toplo, xlab = "component", ylab = "% eigenvalue", type = "b", pch = 16, xaxt = "n")
-    axis(side = 1, at = 1:p)
-    if (kaiser.print)
-      abline(a = 1, b = 0, lty = 2)
+    pl = screeplot(ee$val, kaiser_line = kaiser_line)
   }
   if (kaiser.print){
     if (any((diag(S) - 1) > 1e-6))
@@ -114,5 +108,4 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
   out$method = "PCA"
   out$Call = match.call()
   return(out)
-  on.exit(par(old.par))
 }
