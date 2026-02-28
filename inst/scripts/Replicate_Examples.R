@@ -1,4 +1,6 @@
 
+
+library(PMlsspca)
 #MSSCQ data ===========================
 load( "Data/msscq.Rdata", verbose = T)
 # Loading objects:
