@@ -127,7 +127,7 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
 #' @return If `rtn = TRUE`, a `ggplot` object; otherwise `NULL` (invisibly).
 #'
 #' @export
- screeplot = function(x, nplot, perc = TRUE, ylab = "variance explained", addtitle = T, prn = TRUE, rtn = FALSE){
+ screeplot = function(x, nplot, ylab = "eigenvalues", addtitle = T, prn = TRUE, rtn = FALSE){
   
   if(missing(nplot)) nplot = length(x)
   if(is.list(x)){
@@ -136,15 +136,11 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
     else
       stop("x must be a list with elment `$values', or a vector of eigenvalues")
   }
-  if(perc) x = x/sum(x)
   df = data.frame(order = 1:nplot,
-                  vexp = x[1:nplot])
-  scree_pl = ggplot(df, aes(x = order, y = vexp)) + geom_point(size = 2) + geom_line() + labs(y = ylab) + theme_tuto()
+                  eigenvalue = x[1:nplot])
+  scree_pl = ggplot(df, aes(x = order, y = eigenvalue)) + geom_point(size = 2) + geom_line() + labs(y = ylab) + theme_tuto()
   if(addtitle) scree_pl = scree_pl + labs(title = "screeplot") +
     theme(plot.title = element_text(hjust = 0.5))
-  
-  if (perc)
-    scree_pl = scree_pl + scale_y_continuous(labels = scales::percent)
   
   if(prn)
     print(scree_pl)
