@@ -5,7 +5,7 @@
 \title{\strong{Plot loadings or contributions from an `spca` object}}
 \usage{
 \method{plot}{spca}(
-  spca_obj,
+  x,
   nplot,
   plotcontributions = TRUE,
   onlynonzero = TRUE,
@@ -26,9 +26,9 @@
 )
 }
 \arguments{
-\item{spca_obj}{An object of class `spca`.}
+\item{x}{An object of class `spca`.}
 
-\item{nplot}{Integer. Number of components to plot. Defaults to `spca_obj$ncomps`.
+\item{nplot}{Integer. Number of components to plot. Defaults to `x$ncomps`.
 If a single integer is passed, components `1:nplot` are plotted.}
 
 \item{plotcontributions}{Logical. If `TRUE`, plots contributions (typically scaled to
@@ -63,7 +63,7 @@ coordinates inside the panel. For circular plots, the legend is placed on the ri
 \item{vert}{Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).}
 
 \item{pcloadings}{Optional numeric matrix of PCA loadings (or PCA contributions) with
-the same dimensions as `spca_obj$loadings`. If supplied, SPCA and PCA values are
+the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
 plotted together for comparison (not available for `plottype = "circular"`).}
 
 \item{colourscale}{Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette is applied to groups; otherwise it is applied to the components.}

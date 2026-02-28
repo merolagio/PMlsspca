@@ -5,7 +5,7 @@
 \title{\strong{Prints the sparse loadings from an spca object}}
 \usage{
 \method{print}{spca}(
-  spca_obj,
+  x,
   cols,
   only.nonzero = TRUE,
   perc = TRUE,
@@ -17,7 +17,7 @@
 )
 }
 \arguments{
-\item{spca_obj}{An spca object.}
+\item{x}{An spca object.}
 
 \item{cols}{A vector indicating which components should be printed. Default
 all. If an iteger is passed, it is set to 1:cols.}

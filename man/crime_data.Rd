@@ -3,7 +3,7 @@
 \docType{data}
 \name{crime_data}
 \alias{crime_data}
-\alias{crime_var_lookup_df}
+\alias{crime_var_lookup}
 \title{Crime data and variable lookup}
 \format{
 \describe{

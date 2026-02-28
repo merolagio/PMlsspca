@@ -73,7 +73,7 @@ is.spca <- function(x){
 #' variance explained.
 #' 
 #' 
-#' @param spca_obj An spca object.
+#' @param x An spca object.
 #' @param cols A vector indicating which components should be printed. Default
 #' all. If an iteger is passed, it is set to 1:cols.
 #' @param only.nonzero  Logical: if = TRUE only the nonzero loadings are printed.
@@ -94,42 +94,42 @@ is.spca <- function(x){
 #' so that only exact (or partial) prescribed arguments can be entered. 
 #' @export
 #' @method print spca
-print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, thresh = 1E-03, rtn = FALSE, namescomp = NULL, ...){#
+print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, thresh = 1E-03, rtn = FALSE, namescomp = NULL, ...){#
   goodarg <- as.list(environment())
   badarg <- eval(substitute(alist(...)))
   if (length(badarg) > 0){
     stop(paste0("\nUnused arguments: ", paste(names(badarg), collapse=", ")))
   }
 # ## --
-  if (is.spca(spca_obj) == TRUE){
+  if (is.spca(x) == TRUE){
     if (perc == TRUE){
-      if(any(names(spca_obj) == "contributions"))
-        A <- spca_obj$contributions
+      if(any(names(x) == "contributions"))
+        A <- x$contributions
       else
-        A <- make.cont(spca_obj)
+        A <- make.cont(x)
     }
     else{
-      if (is.null(spca_obj$As))
-        A <- spca_obj$loadings
+      if (is.null(x$As))
+        A <- x$loadings
       else 
-        A <- spca_obj$As
+        A <- x$As
     }
   }## end is.spca == true
   else{
-    if (is.matrix(spca_obj) | is.vector(spca_obj)){
-      if(is.matrix(spca_obj)){
+    if (is.matrix(x) | is.vector(x)){
+      if(is.matrix(x)){
         if (perc == TRUE)
-          A <- make.cont(smpc = spca_obj)
+          A <- make.cont(smpc = x)
         else
-          A = spca_obj
+          A = x
       }
-      if (is.vector(spca_obj))
+      if (is.vector(x))
         if (is.vector(A))
           A <- as.matrix(A, ncol = 1)
     }    
     else
-      stop(paste("The argument must be either a spca_obj object or a matrix, not a", 
-                 class(spca_obj), "object"))
+      stop(paste("The argument must be either a x object or a matrix, not a", 
+                 class(x), "object"))
   } ## end if
   if (missing(cols))
     cols <- 1:ncol(A)
@@ -164,8 +164,8 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
   #  ind = (abs(A)> thresh & abs(A) < thresh)
   #  fx[ind] = "--"
   fx <- format(fx, justify = "right" )
-  if (any(class(spca_obj) == "spca")){
-    vexp <- cumsum(spca_obj$vexp[cols])
+  if (any(class(x) == "spca")){
+    vexp <- cumsum(x$vexp[cols])
     doo <- rep("-----", ifelse(is.null(ncol(fx)), 1, ncol(fx)))
     fx <- rbind(fx, doo, round(100*vexp,1))
     rownames(fx)[nrow(fx)-1] <- ""    
@@ -303,7 +303,7 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 # }
 
 
-## plot.spca=====================
+# plot.spca=====================
 #' \strong{Plot loadings or contributions from an `spca` object}
 #'
 #' Plots the sparse loadings (or the corresponding percent contributions) stored in an `spca` object. Plots can be produced as linear bar plots, circular bar plots, or a
@@ -313,8 +313,8 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' If `pcloadings` is provided, the plot overlays SPCA and PCA values for comparison
 #' (circular bar plots with PCA are not implemented; standard bar plots are used instead).
 #'
-#' @param spca_obj An object of class `spca`.
-#' @param nplot Integer. Number of components to plot. Defaults to `spca_obj$ncomps`.
+#' @param x An object of class `spca`.
+#' @param nplot Integer. Number of components to plot. Defaults to `x$ncomps`.
 #'   If a single integer is passed, components `1:nplot` are plotted.
 #' @param plotcontributions Logical. If `TRUE`, plots contributions (typically scaled to
 #'   sum to 100\% within each component); otherwise plots raw loadings.
@@ -336,7 +336,7 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' @param legendTitle Optional character. Legend title for the fill aesthetic.
 #' @param vert Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).
 #' @param pcloadings Optional numeric matrix of PCA loadings (or PCA contributions) with
-#'   the same dimensions as `spca_obj$loadings`. If supplied, SPCA and PCA values are
+#'   the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
 #'   plotted together for comparison (not available for `plottype = "circular"`).
 #' @param colourscale Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette is applied to groups; otherwise it is applied to the components.
 #' @param returnplot Logical. If `TRUE`, returns the `ggplot2` object.
@@ -354,12 +354,12 @@ print.spca <- function(spca_obj, cols, only.nonzero = TRUE, perc = TRUE, digits 
 #' The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
 #' @export
 #' @method plot spca
-plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
+plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
   
 #validation=============
-  p = nrow(spca_obj$loadings)
+  p = nrow(x$loadings)
   
-  if(!(any(class(spca_obj) == "spca")))
+  if(!(any(class(x) == "spca")))
     stop("plot.spca requires an spca object as first argument")
   
   if(!(is.factor(vargroups)) && (is.vector(vargroups)))
@@ -409,11 +409,11 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       # explicitly set the horizontal lines (or they will disappear too)
       panel.grid.major.y = element_line( linewidth = 0.1, color = "grey90")) 
   
-  if (is.spca(spca_obj) == FALSE){
+  if (is.spca(x) == FALSE){
     stop("plot.spca works only for spca objects")
   } 
   if(missing(nplot))
-    nplot = spca_obj$ncomps
+    nplot = x$ncomps
   
   if(grepl("^b", plottype[1]) == TRUE)
     plottype = "bars"
@@ -440,15 +440,15 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
     colourscale = "ggplot"
   
   
-  n <- nrow(spca_obj$loadings)
+  n <- nrow(x$loadings)
   
   plotlab = TRUE
   if(varnames[1] == TRUE){
-    if (is.null(rownames(spca_obj$loadings))){
+    if (is.null(rownames(x$loadings))){
       lbl <- paste0("VAR", 1:n)
     }
     else
-      lbl <- rownames(spca_obj$loadings)
+      lbl <- rownames(x$loadings)
   }  
   else
     if(length(varnames) == n)
@@ -472,14 +472,14 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       data_df <- data.frame(
         variable = factor(rep(1:n, nplot), labels = lbl),
         component = factor(rep(1:nplot, each = n), labels = stripnames),
-        value = c(spca_obj$loadings[, 1:nplot])
+        value = c(x$loadings[, 1:nplot])
       )
     }
     else{
-      if (is.null(spca_obj$contributions))
-        contributions <- scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot))
+      if (is.null(x$contributions))
+        contributions <- scaleColsC(x$loadings[, 1:nplot], 1, rep(1, nplot))
       else 
-        contributions <- spca_obj$contributions[, 1:nplot]
+        contributions <- x$contributions[, 1:nplot]
       data_df <- data.frame(
         variable = factor(rep(1:n, nplot), labels = lbl),
         component = factor(rep(1:nplot, each = n), labels = stripnames),
@@ -625,13 +625,13 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       pcloadings[, cs] <- -pcloadings[, cs]
       
       for (i in 1:nplot){
-        ii <- spca_obj$ind[[i]][1]
-        si <- sign(spca_obj$loadings[ii, i] * pcloadings[ii, i])
+        ii <- x$ind[[i]][1]
+        si <- sign(x$loadings[ii, i] * pcloadings[ii, i])
         if (si == -1){
           message(paste0("changed sign to loadings component ", i ))
-          spca_obj$loadings[, i]  <- -spca_obj$loadings[, i]
-          if (!is.null(spca_obj$contributions)) 
-            spca_obj$loadlist[[i]] <- -spca_obj$loadlist[[i]] 
+          x$loadings[, i]  <- -x$loadings[, i]
+          if (!is.null(x$contributions)) 
+            x$loadlist[[i]] <- -x$loadlist[[i]] 
         }
       }   
       if (plotcontributions == FALSE){
@@ -641,15 +641,15 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
         # }
         
         data_df <- data.frame(
-          variable = factor(c(unlist(spca_obj$ind[1:nplot]), rep(1:n, nplot)), labels = lbl),
-          component = factor(c(rep(1:nplot, times = spca_obj$card[1:nplot]), rep(1:nplot, each = n)), 
+          variable = factor(c(unlist(x$ind[1:nplot]), rep(1:n, nplot)), labels = lbl),
+          component = factor(c(rep(1:nplot, times = x$card[1:nplot]), rep(1:nplot, each = n)), 
                              labels = stripnames),
-          value = c(unlist(spca_obj$loadlist[1:nplot]), c(pcloadings[, 1:nplot]))
+          value = c(unlist(x$loadlist[1:nplot]), c(pcloadings[, 1:nplot]))
         )
       }
       else{
         contributions <- unlist(
-          sapply(spca_obj$loadlist[1:nplot], function(x) x/sum(abs(x)))
+          sapply(x$loadlist[1:nplot], function(x) x/sum(abs(x)))
         )
         pccontributions <- scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot))
         # if(onlynonzero == TRUE){
@@ -658,13 +658,13 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
         # }
         
         data_df = data.frame(
-          variable = factor(c(unlist(spca_obj$ind[1:nplot]), rep(1:n, nplot)), labels = lbl),
-          component = factor(c(rep(1:nplot, times = spca_obj$card[1:nplot]), rep(1:nplot, each = n)), 
+          variable = factor(c(unlist(x$ind[1:nplot]), rep(1:n, nplot)), labels = lbl),
+          component = factor(c(rep(1:nplot, times = x$card[1:nplot]), rep(1:nplot, each = n)), 
                              labels = stripnames),
           value = c(contributions, c(pccontributions[, 1:nplot]))
         )
       }
-      data_df$method <- factor(c(rep(1, sum(spca_obj$card[1:nplot])),
+      data_df$method <- factor(c(rep(1, sum(x$card[1:nplot])),
                                  rep(2, n * nplot)), labels = c("SPCA", "PCA"))
       nrows <- ceiling(nplot/3)
       ncols <- ceiling(nplot/nrows)
@@ -694,11 +694,11 @@ plot.spca <- function(spca_obj, nplot, plotcontributions = TRUE, onlynonzero = T
       
       rownames(pcloadings) = lbl 
       if(plotcontributions == TRUE){
-        value = c(scaleColsC(spca_obj$loadings[, 1:nplot], 1, rep(1, nplot)))
+        value = c(scaleColsC(x$loadings[, 1:nplot], 1, rep(1, nplot)))
         PCvalue = c(scaleColsC(pcloadings[, 1:nplot], 1, rep(1, nplot)))
       }
       else{
-        value = c(spca_obj$loadings[, 1:nplot])
+        value = c(x$loadings[, 1:nplot])
         PCPCvalue = c(pcloadings[, 1:nplot]) 
       }
       SPC_df = data.frame(Variable = factor(rep(1:length(lbl), nplot), labels = lbl),
@@ -1004,7 +1004,7 @@ aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
 #' Card \tab The cardinality, that is the number of non zero loadings\cr
 #' MinLoad/MinCont \tab Minimum absolute value of the non-zero loadings or contribution }
 #'
-#' @param spca_obj An spca object.
+#' @param x An spca object.
 #' @param cols A vector indicating which components should be included. Default
 #' all. If an integer is passed, it is set to 1:cols.
 #' @param contribution Logical: should the loadings be standardised to unit L1 norm
@@ -1021,23 +1021,23 @@ aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
 #' @seealso Examples in \code{\link{lsspca}}.
 #' @export
 #' @method summary spca
-summary.spca <- function(spca_obj, cols, contribution = TRUE, 
+summary.spca <- function(x, cols, contribution = TRUE, 
                          variance_metrics = "cumulative_relative",
                          minload = FALSE, rtn = FALSE, prn = TRUE, 
-                         thrsehcard = 0.001) {
+                         thrsehcard = 0.001, ...) {
   
   # Validation
-  if (!is.spca(spca_obj)) {
+  if (!is.spca(x)) {
     stop("summary.spca works only for spca objects")
   }
   
-  if (is.vector(spca_obj$loadings)) {
-    spca_obj$loadings <- as.matrix(spca_obj$loadings)
+  if (is.vector(x$loadings)) {
+    x$loadings <- as.matrix(x$loadings)
   }
   
   # Determine columns
   if (missing(cols)) {
-    cols <- 1:min(ncol(spca_obj$loadings), length(spca_obj$vexpPC))
+    cols <- 1:min(ncol(x$loadings), length(x$vexpPC))
   } else if (length(cols) == 1L) {
     cols <- 1:cols
   }
@@ -1050,34 +1050,34 @@ summary.spca <- function(spca_obj, cols, contribution = TRUE,
   
   # Build summary matrix
   out <- rbind(
-    VEXP = spca_obj$vexp * 100,
-    CVEXP = cumsum(spca_obj$vexp) * 100
+    VEXP = x$vexp * 100,
+    CVEXP = cumsum(x$vexp) * 100
   )
   
   # Add variance comparison metrics based on user choice
   if (variance_metrics %in% c("relative", "both")) {
-    out <- rbind(out, RVEXP = spca_obj$vexp / spca_obj$vexpPC * 100)
+    out <- rbind(out, RVEXP = x$vexp / x$vexpPC * 100)
   }
   
   if (variance_metrics %in% c("cumulative_relative", "both")) {
-    out <- rbind(out, RCVEXP = cumsum(spca_obj$vexp) / cumsum(spca_obj$vexpPC) * 100)
+    out <- rbind(out, RCVEXP = cumsum(x$vexp) / cumsum(x$vexpPC) * 100)
   }
   
   # Add cardinality
-  out <- rbind(out, Card = apply(abs(spca_obj$loadings) > thrsehcard, 2, sum))
+  out <- rbind(out, Card = apply(abs(x$loadings) > thrsehcard, 2, sum))
   
   # Add convergence if available
-  if (!is.null(spca_obj$conv)) {
-    out <- rbind(out, Converged = spca_obj$conv)
+  if (!is.null(x$conv)) {
+    out <- rbind(out, Converged = x$conv)
   }
   
   # Add minimum loading/contribution if requested
   if (minload) {
     if (contribution) {
-      min_vals <- get.minload(spca_obj, perc = TRUE) * 100
+      min_vals <- get.minload(x, perc = TRUE) * 100
       min_label <- "MinCont"
     } else {
-      min_vals <- get.minload(spca_obj, perc = FALSE)
+      min_vals <- get.minload(x, perc = FALSE)
       min_label <- "MinLoad"
     }
     out <- rbind(out, temp = min_vals)

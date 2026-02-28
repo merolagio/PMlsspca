@@ -98,7 +98,7 @@ NULL
 #'
 #' @name crime_data
 #' @docType data
-#' @aliases crime_var_lookup_df
+#' @aliases crime_var_lookup
 #'
 #' @source \url{http://archive.ics.uci.edu/ml/machine-learning-databases/communities/}
 #'

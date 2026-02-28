@@ -1,17 +1,10 @@
-@article{merola15,
-  author       = {Merola, Giovanni Maria},
-  title        = {Least Squares Sparse Principal Component Analysis: a Backward Elimination approach to attain large loadings},
-  journal      = {Australia \& New Zealand Journal of Statistics},
-  year         = {2015},
-  volume       = {57},
- pages = {391-429},
-}
-@article{merola19,
-    author = "Giovanni Maria Merola and Gemai Chen",
-    title = "Projection sparse principal component analysis: An efficient least squares method",
-    journal = "Journal of Multivariate Analysis",
-    volume = "173",
-    pages = "366 - 382",
-    year = "2019",
-    url = "http://www.sciencedirect.com/science/article/pii/S0047259X18305463",
-}
+citHeader("To cite PMlsspca in publications use:")
+
+bibentry(
+  bibtype = "Manual",
+  title   = "PMlsspca: Least-Squares Sparse PCA and Companion Tools",
+  author  = person("Giovanni M.", "Merola"),
+  year    = "2026",
+  note    = "R package version 1.0.4",
+  url     = "https://github.com/merolagio/PMlsspca"
+)

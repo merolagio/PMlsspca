@@ -16,9 +16,9 @@
 #' @param  varselection one of "stepwise", "backward" or "forward". Default "stepwise". Initial letter enough.
 #' @param maxcard integer (optional) a vector or one integer. Missing values filled with last value.
 #' @param force_in NULL or list or vector of indices must be in component. 
-#' @param force_out NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component
+#' @param force_out NULL or list or vector of indices cannot be in component.  
 #' @param scalex = FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
-#'  @param mkvif Logical, should variance inflation factor be computed for each variable included in a component? May slowdown.
+#' @param mkvif = FALSE, if true computes the variance inflation for each variable selected  in every component May slowdown.
 #' @details
 #' \code{alpha} controls the $R^2$. The function may be slow because it uses the package leaps for variable selection. This is to keep results the same as in the paper.  
 #' 

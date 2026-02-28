@@ -9,7 +9,7 @@
 #' @param scaledata = FALSE , should variables be centered to unit variance?
 #' @param only.values Logical: should only the eigenvalues be computed?
 #' @param screeplot Logical: should the screeplot be plotted?
-#' @param kaiser.line Logical: adds a horizontal line to the screeplot at y = 1 
+#' @param kaiser_line Logical: adds a horizontal line to the screeplot at y = 1 
 #' @param kaiser.print Logical: should the kaiser rule be computed, printed and
 #' returned?.
 #' @return An object of class \emph{spca} is returned, which contains:

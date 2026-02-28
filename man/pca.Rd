@@ -28,10 +28,10 @@ pca(
 
 \item{screeplot}{Logical: should the screeplot be plotted?}
 
+\item{kaiser_line}{Logical: adds a horizontal line to the screeplot at y = 1}
+
 \item{kaiser.print}{Logical: should the kaiser rule be computed, printed and
 returned?.}
-
-\item{kaiser.line}{Logical: adds a horizontal line to the screeplot at y = 1}
 }
 \value{
 An object of class \emph{spca} is returned, which contains:

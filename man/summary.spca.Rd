@@ -5,7 +5,7 @@
 \title{\strong{ Prints summaries from an spca object}}
 \usage{
 \method{summary}{spca}(
-  spca_obj,
+  x,
   cols,
   contribution = TRUE,
   variance_metrics = "cumulative_relative",
@@ -16,7 +16,7 @@
 )
 }
 \arguments{
-\item{spca_obj}{An spca object.}
+\item{x}{An spca object.}
 
 \item{cols}{A vector indicating which components should be included. Default
 all. If an integer is passed, it is set to 1:cols.}

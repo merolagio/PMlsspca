@@ -252,7 +252,7 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
               st = sapply(ind_list, mean)
               hjustb = 0.5
             }
-            top_y <- utilities::tail(levels(dat$Var2), 1)
+            top_y <- utils::tail(levels(dat$Var2), 1)
             
             q <- q +
               ggplot2::annotate(

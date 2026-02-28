@@ -35,10 +35,10 @@ lsspca(
 
 \item{force_in}{NULL or list or vector of indices must be in component.}
 
-\item{force_out}{NULL or list or vector of indices cannot be in component.  @param mkvif = FALSE, if true computes the variance inflation factors for each variable selected in each component}
+\item{force_out}{NULL or list or vector of indices cannot be in component.}
 
 \item{scalex}{= FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
-@param mkvif Logical, should variance inflation factor be computed for each variable included in a component? May slowdown.}
+@param mkvif = FALSE, if true computes the variance inflation for each variable selected  in every component May slowdown.}
 }
 \value{
 an \code{\link{spca_object}}.
