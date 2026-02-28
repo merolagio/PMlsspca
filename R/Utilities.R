@@ -126,7 +126,7 @@ wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, add
 #' @return If `rtn = TRUE`, a `ggplot` object; otherwise `NULL` (invisibly).
 #'
 #' @export
- screeplot = function(x, nplot, kaiser = F, ylab = "eigenvalues", addtitle = T, prn = TRUE, rtn = FALSE){
+ screeplot = function(x, nplot, kaiser_line = F, ylab = "eigenvalues", addtitle = T, prn = TRUE, rtn = FALSE){
   
   if(missing(nplot)) nplot = length(x)
   if(is.list(x)){

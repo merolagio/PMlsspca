@@ -7,7 +7,7 @@
 screeplot(
   x,
   nplot,
-  kaiser = F,
+  kaiser_line = F,
   ylab = "eigenvalues",
   addtitle = T,
   prn = TRUE,
@@ -19,6 +19,8 @@ screeplot(
 
 \item{nplot}{Integer. Number of leading eigenvalues to plot; defaults to `length(x)` (or `length(x$values)` if `x` is a list).}
 
+\item{kaiser_line}{Logical. If `TRUE`plots a line at y = 1.}
+
 \item{ylab}{Character. Y-axis label.}
 
 \item{addtitle}{Logical. If `TRUE`, adds a plot title.}
@@ -26,8 +28,6 @@ screeplot(
 \item{prn}{Logical. If `TRUE`, prints the plot.}
 
 \item{rtn}{Logical. If `TRUE`, returns the ggplot object.}
-
-\item{kaiser_line}{Logical. If `TRUE`plots a line at y = 1.}
 }
 \value{
 If `rtn = TRUE`, a `ggplot` object; otherwise `NULL` (invisibly).
