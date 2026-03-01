@@ -322,6 +322,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
 #' @param varnames Logical or character vector. If `TRUE`, uses row names of the loading matrix (or `VAR1, ..., VARp`. if missing). If a character vector of length `p` is supplied, it is used as the variable labels. If `FALSE`, variable labels are omitted.
 #' @param vargroups Optional factor/character vector of length `p` defining groups of variables. If provided, bars/tiles are colored by group instead of by component.
 #' @param plottitle Optional character. Plot title (added with `labs(title = ...)`).
+#' @param x_axis_lab label for x axis. default is "variables"
 #' @param stripnames Optional character vector of facet strip labels for components.
 #'   Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.
 #' @param adjustLabelsCirc Optional numeric vector of length `nplot`. Additive adjustment
@@ -354,7 +355,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
 #' The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
 #' @export
 #' @method plot spca
-plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
+plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, x_axis_lab = "variables", adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
   
 #validation=============
   p = nrow(x$loadings)
@@ -585,7 +586,7 @@ plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, va
        pl = pl + ggplot2::geom_bar(stat = "Identity", color = ifelse(colourscale[1] == "printsafe", "black", NA)) +
           ggplot2::facet_wrap(facets = vars(component), ncol = ncols, nrow = nrows) +
           ggplot2::geom_abline(slope = 0, intercept = 0) + thisTheme +
-          ggplot2::xlab("variables") + ggplot2::ylab( ifelse(plotcontributions == TRUE, "contributions", "loadings"))
+          ggplot2::xlab(x_axis_lab) + ggplot2::ylab( ifelse(plotcontributions == TRUE, "contributions", "loadings"))
         if (!is.null(plotlab))
           pl <- pl + ggplot2::theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)) 
         else

@@ -83,8 +83,9 @@ vec2fac = function(v){
 #' # wachterqq(eigvals, p = ncol(X), n = nrow(X), cor = TRUE, nfit_line = 5, rtn = TRUE)
 #'
 #' @export
-wachterqq = function(eigvals, p, n, gamma, cor = T, nplot, nfit_line = NULL, addtitle = TRUE, prn = TRUE, rtn = FALSE){
+wachterqq = function(eigvals, p = NULL, n, gamma, cor = T, nplot, nfit_line = NULL, addtitle = TRUE, prn = TRUE, rtn = FALSE){
   
+  if(is.null(p)) p = length(eigvals)
   if(missing(gamma)) gamma = n/p
   
   if(missing(nplot)) nplot = length(eigvals)
