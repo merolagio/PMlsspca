@@ -37,4 +37,8 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Giovanni M. Merola \email{merolagio@gmail.com}
+
+}
 \keyword{internal}

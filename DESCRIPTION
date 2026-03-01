@@ -10,14 +10,12 @@ Description: Implements least-squares sparse principal component analysis (LSSPC
 Maintainer: Giovanni M. Merola <merolagio@gmail.com>
 URL: https://github.com/merolagio/PMlsspca
 BugReports: https://github.com/merolagio/PMlsspca/issues
-Description: Implements least-squares sparse principal component analysis (LSSPCA).
-    The approach follows Merola (2015) and Merola and Chen (2019).
 License: AGPL-3
 Encoding: UTF-8
 Depends:
     R (>= 4.3.3) 
 Imports: 
-  Rcpp (>= 1.0.14)
+  Rcpp (>= 1.0.14),
   ggplot2 (>= 4.0.0), 
   RMTstat (>= 0.3.1),
   reshape2, leaps, scales
