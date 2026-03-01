@@ -13,6 +13,7 @@
   vargroups = NULL,
   plottitle = NULL,
   stripnames = NULL,
+  x_axis_lab = "variables",
   adjustLabelsCirc = NULL,
   plottype = c("bars", "circular", "tiles"),
   plotgrid = c("h", TRUE, NA),
@@ -44,6 +45,8 @@ sum to 100\% within each component); otherwise plots raw loadings.}
 
 \item{stripnames}{Optional character vector of facet strip labels for components.
 Defaults to `"Comp 1"`, `"Comp 2"`, \dots, `"Comp nplot"`.}
+
+\item{x_axis_lab}{label for x axis. default is "variables"}
 
 \item{adjustLabelsCirc}{Optional numeric vector of length `nplot`. Additive adjustment
 (in degrees) to the component label angles in circular bar plots.}
