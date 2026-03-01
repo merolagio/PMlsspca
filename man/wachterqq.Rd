@@ -6,7 +6,7 @@
 \usage{
 wachterqq(
   eigvals,
-  p,
+  p = NULL,
   n,
   gamma,
   cor = T,

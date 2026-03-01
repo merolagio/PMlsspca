@@ -37,8 +37,9 @@ lsspca(
 
 \item{force_out}{NULL or list or vector of indices cannot be in component.}
 
-\item{scalex}{= FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.
-@param mkvif = FALSE, if true computes the variance inflation for each variable selected  in every component May slowdown.}
+\item{scalex}{= FALSE if TRUE the variables are scaled to unit length. Variables are automatically scaled to zero mean (with warning) if they are not.}
+
+\item{mkvif}{= FALSE, if true computes the variance inflation for each variable selected  in every component May slowdown.}
 }
 \value{
 an \code{\link{spca_object}}.

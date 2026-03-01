@@ -9,7 +9,6 @@ pca(
   ncomps,
   centerdata = FALSE,
   scaledata = FALSE,
-  only.values = FALSE,
   screeplot = FALSE,
   kaiser_line = F,
   kaiser.print = FALSE
@@ -24,14 +23,11 @@ pca(
 
 \item{scaledata}{= FALSE , should variables be centered to unit variance?}
 
-\item{only.values}{Logical: should only the eigenvalues be computed?}
-
 \item{screeplot}{Logical: should the screeplot be plotted?}
 
 \item{kaiser_line}{Logical: adds a horizontal line to the screeplot at y = 1}
 
-\item{kaiser.print}{Logical: should the kaiser rule be computed, printed and
-returned?.}
+\item{kaiser.print}{Logical: should the kaiser rule be computed, printed and returned?.}
 }
 \value{
 An object of class \emph{spca} is returned, which contains:
@@ -47,8 +43,10 @@ the columns.}
 \item{vexpPC}{Vector with the \% variance explained by each principal component.} 
 \item{rcvexp}{Vector with the proportion of cumulative variance explained by each 
 component over the cumulative variance explained by the corresponding PCs.}
+\item {eigenvalues}{all the eigenvalues}
+\item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE.}}
+\item{method}{= "PCA"}
 \item{Call}{The called with its arguments.}
-\item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE}.}
 }
 }
 \description{
@@ -56,13 +54,9 @@ Creates PCA output as an \link{PMlsspca-package} object
 which can run on the spca utilities. .
 }
 \details{
-\emph{ncomps} is just the number of components retained from the full eigen
-decomposition, doesn't speed up the function. \emph{only.values} does not compute the loadings and is more efficient. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should
-be used only for correlation matrices, if called on a covariance matrix a
-warning is generated.
+\emph{ncomps} is just the number of components retained, doesn't speed up the function. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should be used only for correlation matrices, if called on a covariance matrix a warning is generated.
 }
 \seealso{
 See also \code{\link{print.spca}, \link{summary.spca}}
-######=============================================================  
-######=============================================================
+######============================================================
 }

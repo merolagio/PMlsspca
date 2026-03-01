@@ -12,7 +12,8 @@
   minload = FALSE,
   rtn = FALSE,
   prn = TRUE,
-  thrsehcard = 0.001
+  thrsehcard = 0.001,
+  ...
 )
 }
 \arguments{

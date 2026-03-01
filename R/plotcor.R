@@ -201,18 +201,18 @@ plotcor <- function (S, axis_labels = TRUE, groups = FALSE,
     q = q + ggplot2::theme_bw()  + 
       ggplot2::scale_fill_gradient(limits = c(-1,1), high = "black", low = "white", guide =  ggplot2::guide_legend(title ="Cor")) +
       ggplot2::theme(legend.position="bottom",
-            legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
+            legend.key = ggplot2::element_rect(color = "black", linewidth = 1, linetype = 1))
   }
   else 
     if (!(is.na(lowcol[1]) | is.na(highcol[1])))    
       q = q + ggplot2::scale_fill_gradient2(limits = c(-1, 1), low = lowcol[1], high = highcol[1], guide = ggplot2::guide_legend(title ="Cor"))  + 
     ggplot2::theme(legend.position="bottom",
-                   legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
+                   legend.key = ggplot2::element_rect(color = "black", linewidth = 1, linetype = 1))
   else
     q = q + ggplot2::scale_fill_gradient2(limits = c(-1, 1), 
                       guide =  ggplot2::guide_legend(title ="Cor"))  + 
     ggplot2::theme(legend.position="bottom",
-                   legend.key = ggplot2::element_rect(color = "black", size = 1, linetype = 1))
+                   legend.key = ggplot2::element_rect(color = "black", linewidth = 1, linetype = 1))
   
   if (separate_groups > 0){
     hline_df = data.frame(y = yM[-1], yend = yM[-1], x = 0.5, xend = p +0.5) 
