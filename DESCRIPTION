@@ -2,20 +2,25 @@ Package: PMlsspca
 Type: Package
 Title: Least Squares Sparse Principal Components Analysis
 Version: 1.0.4
-Date: 2026-02-12
-Author: Giovanni M. Merola
-Maintainer: <merolagio@gmail.com>
-Description: Implements least-squares sparse PCA using sequential residualization and subset selection. The approach follows Merola G. M. ``2015 Sparse Principal Component Analysis: a Least Squares Approach. Australian & New Zealand J. of Statistics. 57(3)'' and  Merola G. M, Chen G. 2019 ``Projection sparse principal component analysis: An efficient least squares method''. Journal of Multivariate Analysis. 173. pp. 366-382.
+Date: 2026-03-02
+Authors@R: 
+    person("Giovanni M.", "Merola", email = "merolagio@gmail.com", role = c("aut", "cre"))
+Description: Implements least-squares sparse principal component analysis (LSSPCA).
+    The approach follows Merola (2015) and Merola and Chen (2019).
+Maintainer: Giovanni M. Merola <merolagio@gmail.com>
+URL: https://github.com/merolagio/PMlsspca
+BugReports: https://github.com/merolagio/PMlsspca/issues
+Description: Implements least-squares sparse principal component analysis (LSSPCA).
+    The approach follows Merola (2015) and Merola and Chen (2019).
 License: AGPL-3
 Encoding: UTF-8
 Depends:
-    R (>= 4.3),  Rcpp (>= 1.0.14)
+    R (>= 4.3.3) 
 Imports: 
+  Rcpp (>= 1.0.14)
   ggplot2 (>= 4.0.0), 
   RMTstat (>= 0.3.1),
   reshape2, leaps, scales
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.3.2
-URL: https://github.com/merolagio/PMlsspca
-BugReports: https://github.com/merolagio/PMlsspca/issues
 LazyData: true
