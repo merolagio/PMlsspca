@@ -21,6 +21,14 @@ MkCorCompMat <- function(A, S, d = 0L) {
     .Call(`_PMlsspca_MkCorCompMat`, A, S, d)
 }
 
+vifSC <- function(S, ind) {
+    .Call(`_PMlsspca_vifSC`, S, ind)
+}
+
+vifSPseudoC <- function(S, ind) {
+    .Call(`_PMlsspca_vifSPseudoC`, S, ind)
+}
+
 aatC <- function(A) {
     .Call(`_PMlsspca_aatC`, A)
 }
@@ -91,13 +99,5 @@ GenEigenC <- function(A, B) {
 
 solveC <- function(S) {
     .Call(`_PMlsspca_solveC`, S)
-}
-
-vifSC <- function(S, ind) {
-    .Call(`_PMlsspca_vifSC`, S, ind)
-}
-
-vifSPseudoC <- function(S, ind) {
-    .Call(`_PMlsspca_vifSPseudoC`, S, ind)
 }
 

@@ -7,11 +7,9 @@
 #' @param ncomps Integer: number of loadings to retain. If missing all loadings are retained.
 #' @param centerdata = FALSE, should variables be centered to zero mean automatically done if any mean is not zero
 #' @param scaledata = FALSE , should variables be centered to unit variance?
-#' @param only.values Logical: should only the eigenvalues be computed?
 #' @param screeplot Logical: should the screeplot be plotted?
 #' @param kaiser_line Logical: adds a horizontal line to the screeplot at y = 1 
-#' @param kaiser.print Logical: should the kaiser rule be computed, printed and
-#' returned?.
+#' @param kaiser.print Logical: should the kaiser rule be computed, printed and returned?.
 #' @return An object of class \emph{spca} is returned, which contains:
 #' \describe{
 #' \item{loadings}{Matrix with the loadings scaled to unit \eqn{L_2} norm in 
@@ -25,22 +23,20 @@
 #' \item{vexpPC}{Vector with the \% variance explained by each principal component.} 
 #' \item{rcvexp}{Vector with the proportion of cumulative variance explained by each 
 #' component over the cumulative variance explained by the corresponding PCs.}
+#' \item {eigenvalues}{all the eigenvalues}
+#' \item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE.}}
+#' \item{method}{= "PCA"}
 #' \item{Call}{The called with its arguments.}
-#' \item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE}.}
 #' }
-#' @details \emph{ncomps} is just the number of components retained from the full eigen
-#' decomposition, doesn't speed up the function. \emph{only.values} does not compute the loadings and is more efficient. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should
-#' be used only for correlation matrices, if called on a covariance matrix a
-#' warning is generated. 
+#' @details \emph{ncomps} is just the number of components retained, doesn't speed up the function. Kaiser rule determines the number of components as the number of eigenvalues larger than one. It should be used only for correlation matrices, if called on a covariance matrix a warning is generated. 
 # 
 #' @export pca
 #' @seealso See also \code{\link{print.spca}, \link{summary.spca}}
 pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
-                only.values = FALSE, screeplot= FALSE, kaiser_line = F, kaiser.print = FALSE){
-  #'######=============================================================  
+                 screeplot= FALSE, kaiser_line = F, kaiser.print = FALSE){
+  #'######============================================================
   ## computes the PCA loadings with vexp, cumulative vexp and eigenvalues
-  #'######=============================================================  
-  
+######============================================================ 
   if (is.data.frame(M))
     M = as.matrix(M)
   if (!is.matrix(M))
@@ -48,6 +44,14 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
   
   n = nrow(M)
   p = ncol(M)
+  
+  
+  if(missing(ncomps))
+    ncomps = p
+  if((ncomps > p) || (ncomps <= 0)){
+    warning(paste("incorrect value for ncomps in pca, set to), p"))
+    ncomps = p}
+  
   is_datamatrix_M = FALSE
   if ((n != p) & !isSymmetric(M))
     is_datamatrix_M = TRUE
@@ -64,37 +68,32 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
 
   ee = EigenC(as.matrix(S))
 
-  if(missing(ncomps))
-    ncomps = p
-  if (only.values == FALSE){
+  
     ee$vec = scaleColsC(ee$vec[, 1:ncomps], 0, sign(ee$vec[1, 1:ncomps]))
     rownames(ee$vec) = colnames(S)
     colnames(ee$vec) = paste0("PC", 1:ncomps)
-  }
-  else
-    ee$vec = NULL
-  vexp = ee$val[1:ncomps]/sum(ee$val)
-  contributions = scaleColsC(ee$vec[,1:ncomps], 1, rep(1, ncomps))
-  rownames(contributions) = colnames(S)
+    contributions = scaleColsC(ee$vec[,1:ncomps], 1, rep(1, ncomps))
+    rownames(contributions) = colnames(S)
+    ldlst = lapply(1:ncomps, function(i, x) x[, i], x = ee$vec[, 1:ncomps])
+    vexp = ee$val[1:ncomps]/sum(ee$val)
+  
   out = list(loadings = ee$vec[, 1:ncomps, drop = FALSE], 
              contributions = contributions,
              ncomps = ncomps, cardinality = rep(p, ncomps), 
              ind = as.list(rep(list(1:p), ncomps)), 
              vexp = vexp, vexpPC = vexp, cvexp = cumsum(ee$val[1:ncomps])/sum(ee$val),
-             loadlist = lapply(1:ncomps, function(i, x) x[, i], x = ee$vec))
-  
-  if (is_datamatrix_M == TRUE){
+             loadlist = ldlst, eigenvalues = ee$val)
+  if (is_datamatrix_M){
     out$scores = M %*% out$loadings[, 1:ncomps, drop = FALSE]
     colnames(out$scores) = paste0("Comp", 1:ncomps)
-  }  
+    
   if (out$ncomps > 1){
       out$corComp = MkCorCompMat(out$loadings, S, d = out$ncomps)
+  }
   }
   class(out) = c("spca", "list")
   out$vif <- make_vif_R(out, S, prn = FALSE)
   
-  old.par <- par(no.readonly = TRUE) 
-
   if (screeplot == TRUE){
     pl = screeplot(ee$val, kaiser_line = kaiser_line)
   }
