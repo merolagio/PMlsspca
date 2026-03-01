@@ -1,9 +1,16 @@
+
+# PMlsspca 1.0.4
+-cleaned documentation
+-improved cpp to mapped view by reference instead of copies
+-added return eigennvalues to pca 
+-fixed a few deprecated arguments in ggplot
+
 # PMlsspca 1.0.3
 
 ## package code
 - fixed qq-plot line fitting, now correct number of points excluded in n_fit is negative
 - removed option perc from screeplot 
-- added NEWSS.md
+- added NEWS.md
 
 
 # PMlsspca 1.0.2
