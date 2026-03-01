@@ -86,8 +86,7 @@ is.spca <- function(x){
 #' @param rtn Logical: should the formatted (text) table be returned?
 #' @param namescomp A vector of names for the components. If NULL assigned as
 #' "Comp j"
-#' @param  ...  Additonal arguments for generic print, additional arguments will
-#'  generate an error.
+#' @param ... Further arguments; currently ignored.
 #' @return If rtn = TRUE, it returns a text table formatted as specified by the
 #' arguments.
 #' @note This is a wrapper for the main function in which the "dots" are disabled
@@ -336,14 +335,13 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
 #'   coordinates inside the panel. For circular plots, the legend is placed on the right.
 #' @param legendTitle Optional character. Legend title for the fill aesthetic.
 #' @param vert Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).
-#' @param pcloadings Optional numeric matrix of PCA loadings (or PCA contributions) with
-#'   the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
+#' @param pcloadings Optional numeric matrix of PCA loadings (or PCA contributions) with the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
 #'   plotted together for comparison (not available for `plottype = "circular"`).
 #' @param colourscale Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette is applied to groups; otherwise it is applied to the components.
 #' @param returnplot Logical. If `TRUE`, returns the `ggplot2` object.
-#' @param produceplot Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when
-#'   only returning the `ggplot2` object.
-#'
+#' @param produceplot Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when only returning the `ggplot2` object.
+#' @param ... Further arguments; currently ignored.
+#' 
 #' @details
 #' \code{colourscale} options: '"cbb"' is colorblind-friendly (with black), `"printsafe"` is colorblind- and printer-friendly, `"bw"` uses gray tones, and "ggplot"` uses the default ggplot2 scale. A custom vector of hex RGB colors can also be supplied. For more than 7 colours use "ggplot"
 #'
@@ -355,7 +353,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
 #' The `printsafe` palette corresponds to `OrRd` from \url{http://colorbrewer2.org/}.
 #' @export
 #' @method plot spca
-plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, x_axis_lab = "variables", adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE){
+plot.spca <- function(x, nplot, plotcontributions = TRUE, onlynonzero = TRUE, varnames = TRUE,  vargroups = NULL, plottitle = NULL, stripnames = NULL, x_axis_lab = "variables", adjustLabelsCirc = NULL, plottype = c("bars", "circular", "tiles"),  plotgrid = c("h", TRUE, NA), legendPosition = c("bottom", "right", "top", "left"), legendTitle = NULL, vert = FALSE, pcloadings = NULL, colourscale = c("ggplot", "cbb", "printsafe", "bw"), returnplot = FALSE, produceplot = TRUE, ...){
   
 #validation=============
   p = nrow(x$loadings)
@@ -1005,7 +1003,7 @@ aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
 #' Card \tab The cardinality, that is the number of non zero loadings\cr
 #' MinLoad/MinCont \tab Minimum absolute value of the non-zero loadings or contribution }
 #'
-#' @param x An spca object.
+#' @param object An spca object.
 #' @param cols A vector indicating which components should be included. Default
 #' all. If an integer is passed, it is set to 1:cols.
 #' @param contribution Logical: should the loadings be standardised to unit L1 norm
@@ -1018,15 +1016,17 @@ aggregate_by_scale <- function(x, ind, only.nonzero = TRUE) {
 #' @param prn Logical: should anything be printed?
 #' @param thrsehcard Value below which loadings are considered zero and not
 #' counted in the cardinality
+#' @param ... Further arguments; currently ignored.
+#' 
 #' @return If rtn = TRUE, a numerical matrix with the summaries.
 #' @seealso Examples in \code{\link{lsspca}}.
 #' @export
 #' @method summary spca
-summary.spca <- function(x, cols, contribution = TRUE, 
+summary.spca <- function(object, cols, contribution = TRUE, 
                          variance_metrics = "cumulative_relative",
                          minload = FALSE, rtn = FALSE, prn = TRUE, 
                          thrsehcard = 0.001, ...) {
-  
+  x = object
   # Validation
   if (!is.spca(x)) {
     stop("summary.spca works only for spca objects")

@@ -5,7 +5,7 @@
 \title{\strong{ Prints summaries from an spca object}}
 \usage{
 \method{summary}{spca}(
-  x,
+  object,
   cols,
   contribution = TRUE,
   variance_metrics = "cumulative_relative",
@@ -17,7 +17,7 @@
 )
 }
 \arguments{
-\item{x}{An spca object.}
+\item{object}{An spca object.}
 
 \item{cols}{A vector indicating which components should be included. Default
 all. If an integer is passed, it is set to 1:cols.}
@@ -37,6 +37,8 @@ Default is "cumulative_relative".}
 
 \item{thrsehcard}{Value below which loadings are considered zero and not
 counted in the cardinality}
+
+\item{...}{Further arguments; currently ignored.}
 }
 \value{
 If rtn = TRUE, a numerical matrix with the summaries.

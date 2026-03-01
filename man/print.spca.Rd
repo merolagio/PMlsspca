@@ -38,8 +38,7 @@ printed.}
 \item{namescomp}{A vector of names for the components. If NULL assigned as
 "Comp j"}
 
-\item{...}{Additonal arguments for generic print, additional arguments will
-generate an error.}
+\item{...}{Further arguments; currently ignored.}
 }
 \value{
 If rtn = TRUE, it returns a text table formatted as specified by the

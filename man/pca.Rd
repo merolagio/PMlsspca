@@ -43,9 +43,9 @@ the columns.}
 \item{vexpPC}{Vector with the \% variance explained by each principal component.} 
 \item{rcvexp}{Vector with the proportion of cumulative variance explained by each 
 component over the cumulative variance explained by the corresponding PCs.}
-\item {eigenvalues}{all the eigenvalues}
+\item{eigenvalues}{all the eigenvalues}
 \item{kaiser}{The number of eigenvalues larger than one, if \code{kaiser.print = TRUE.}}
-\item{method}{= "PCA"}
+\item{method}{Always PCA}
 \item{Call}{The called with its arguments.}
 }
 }

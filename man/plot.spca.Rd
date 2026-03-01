@@ -23,7 +23,8 @@
   pcloadings = NULL,
   colourscale = c("ggplot", "cbb", "printsafe", "bw"),
   returnplot = FALSE,
-  produceplot = TRUE
+  produceplot = TRUE,
+  ...
 )
 }
 \arguments{
@@ -65,16 +66,16 @@ coordinates inside the panel. For circular plots, the legend is placed on the ri
 
 \item{vert}{Logical. If `TRUE`, flips axes for tile plots (`coord_flip()`).}
 
-\item{pcloadings}{Optional numeric matrix of PCA loadings (or PCA contributions) with
-the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
+\item{pcloadings}{Optional numeric matrix of PCA loadings (or PCA contributions) with the same dimensions as `x$loadings`. If supplied, SPCA and PCA values are
 plotted together for comparison (not available for `plottype = "circular"`).}
 
 \item{colourscale}{Character or character vector. One of `"cbb"`, `"printsafe"`, `"bw"`,`"ggplot"`, or a vector of hex color codes. If `vargroups` is provided, the palette is applied to groups; otherwise it is applied to the components.}
 
 \item{returnplot}{Logical. If `TRUE`, returns the `ggplot2` object.}
 
-\item{produceplot}{Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when
-only returning the `ggplot2` object.}
+\item{produceplot}{Logical. If `TRUE`, prints the plot. Useful to set `FALSE` when only returning the `ggplot2` object.}
+
+\item{...}{Further arguments; currently ignored.}
 }
 \value{
 If `returnplot = TRUE`, the `ggplot2` object; otherwise `NULL` (invisibly).
