@@ -42,7 +42,7 @@ pak::pak("merolagio/PMlsspca")
 This is a basic example which shows you how to compute basic LSSPCA
 solutions:
 
-\###load data
+### load data
 
 ``` r
 library(PMlsspca)
@@ -66,24 +66,27 @@ wachterqq(cr_ee$values, p = ncol(crime_data), n = nrow(crime_data), nfit_line = 
 
 <img src="man/figures/README-pca_checks-2.png" width="100%" />
 
-\###Compute PCA
+### Compute PCA
 
 ``` r
 mypca = pca(crime_data, ncomp = 4)
 ```
 
-\###Compute the sparse loadings Important parameters are $`\alpha`$ the
-minimum $`R^2`$, *ncomp* the number of components to compute, *method*
-the LSSPCA to use (“u” for unicrrelated, “c” for correlated and “p” for
-projection \[default\]) and *varselection* (“stepwise” \[default\],
-“backward”, or “forward”). see the help for this function for more.
+### Compute the sparse loadings
+
+Important parameters are $`\alpha`$ the minimum $`R^2`$, *ncomp* the
+number of components to compute, *method* the LSSPCA to use (“u” for
+unicrrelated, “c” for correlated and “p” for projection \[default\]) and
+*varselection* (“stepwise” \[default\], “backward”, or “forward”). see
+the help for this function for more.
 
 ``` r
 mylsspca = lsspca(crime_data, alpha = 0.95, ncomp = 4)
 ```
 
-\###Inspect the lsspca results Methods are *print*, *plot* (several
-options available) and *summary*
+### Inspect the lsspca results
+
+Methods are *print*, *plot* (several options available) and *summary*
 
 ``` r
 summary(mylsspca)
