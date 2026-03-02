@@ -7,6 +7,7 @@
 
 [![R-CMD-check](https://github.com/merolagio/PMlsspca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/merolagio/PMlsspca/actions/workflows/R-CMD-check.yaml)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18829364.svg)](https://doi.org/10.5281/zenodo.18829364)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Project Status:
