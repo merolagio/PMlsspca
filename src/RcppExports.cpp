@@ -285,6 +285,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EigenvaluesC
+Eigen::VectorXd EigenvaluesC(const Eigen::Map<Eigen::MatrixXd>& S);
+RcppExport SEXP _PMlsspca_EigenvaluesC(SEXP SSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type S(SSEXP);
+    rcpp_result_gen = Rcpp::wrap(EigenvaluesC(S));
+    return rcpp_result_gen;
+END_RCPP
+}
 // GenEigenC
 Rcpp::List GenEigenC(const Eigen::Map<Eigen::MatrixXd>& A, const Eigen::Map<Eigen::MatrixXd>& B);
 RcppExport SEXP _PMlsspca_GenEigenC(SEXP ASEXP, SEXP BSEXP) {
@@ -333,6 +344,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PMlsspca_sortC", (DL_FUNC) &_PMlsspca_sortC, 1},
     {"_PMlsspca_sumdiagC", (DL_FUNC) &_PMlsspca_sumdiagC, 1},
     {"_PMlsspca_EigenC", (DL_FUNC) &_PMlsspca_EigenC, 1},
+    {"_PMlsspca_EigenvaluesC", (DL_FUNC) &_PMlsspca_EigenvaluesC, 1},
     {"_PMlsspca_GenEigenC", (DL_FUNC) &_PMlsspca_GenEigenC, 2},
     {"_PMlsspca_solveC", (DL_FUNC) &_PMlsspca_solveC, 1},
     {NULL, NULL, 0}
