@@ -22,9 +22,9 @@ plotcor(ms_r, groups = ms_scalesh_fac,   separate_groups = T, axis_labels = F, a
 
 ##scree and qq plots===========
 
-ms_ee = eigen(ms_r, symmetric = T)
-screeplot(ms_ee$values)
-wachterqq(ms_ee$values, p = ms_p, n = ms_n, cor = T, nfit_line = -4)
+ms_ret = pc_retention(ms_r, n = nrow(msscq), prn_scree = FALSE, prn_qq = F, prn_cvexp = 10, rtn_values = T)
+
+pc_retention(ms_r, n = nrow(msscq), kaiser_line = T, rtn_values = F, prn_scree = T, prn_qq = T, nfit_line = -4)
 
 
 ##PCA==============
@@ -73,6 +73,11 @@ crhc_r = cor(crhc)
 crhc_cor_pl = plotcor(crhc_r, rtn = T, axis_labels = F)
 
 #scree and qq-plot===========
+
+cr_ret = pc_retention(cr_r, n = nrow(msscq), prn_scree = FALSE, prn_qq = F, prn_cvexp = 10, rtn_values = T)
+
+pc_retention(cr_r, n = nrow(msscq), kaiser_line = T, rtn_values = F, prn_scree = T, prn_qq = T, nfit_line = -4)
+
 cr_ee = eigen(cr_r)
 screeplot(cr_ee$values, kaiser_line = T)
 wachterqq(cr_ee$values, p = cr_p, n = cr_n, cor = T, nfit_line = -4)
