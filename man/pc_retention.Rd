@@ -15,7 +15,8 @@ pc_retention(
   prn_scree = TRUE,
   rtn_qq = FALSE,
   prn_qq = TRUE,
-  prn_cvexp = FALSE,
+  rtn_values = TRUE,
+  prn_cvexp = 0,
   digits_cvexp = 1,
   tol_cor = 1e-08,
   tol_sym = 1e-08
@@ -51,33 +52,44 @@ of points used to fit the line.}
 
 \item{prn_qq}{Logical: should the QQ-plot be plotted?}
 
-\item{prn_cvexp}{Logical: should CVEXP be printed as percentages (with a
+\item{rtn_values}{Logical: should eigenvalue statistics be returned?
+Default \code{TRUE}.}
+
+\item{prn_cvexp}{integer: how many CVEXP values should be  printed as percentages (with a
 trailing \code{\%})?}
 
 \item{digits_cvexp}{Integer: number of decimal digits used when printing
 CVEXP percentages.}
 
 \item{tol_cor}{Numeric tolerance for detecting a correlation matrix from a
-symmetric square input \code{M} via \code{diag(M) = 1}.}
+symmetric square input \code{M} via \code{diag(M) == 1}.}
 
 \item{tol_sym}{Numeric tolerance for checking symmetry of a square input
 matrix.}
 }
 \value{
-A list with elements:
+A named list containing any combination of the following three
+  elements, depending on the \code{rtn_*} flags. If no flag is \code{TRUE},
+  returns \code{invisible(NULL)}.
+
 \describe{
-\item{eigvals}{Vector of eigenvalues in decreasing order.}
-\item{vexp}{Vector of variance explained proportions (VEXP).}
-\item{cvexp}{Vector of cumulative variance explained proportions (CVEXP).}
-\item{kaiser}{Number of eigenvalues larger than 1 if a correlation matrix;
-\code{NA} otherwise.}
-\item{screeplot}{Screeplot object if \code{rtn_scree = TRUE}; otherwise
-\code{NULL}.}
-\item{wachterqq}{Wachter (MP) QQ-plot object if \code{rtn_qq = TRUE}; otherwise
-\code{NULL}.}
-\item{is_cor}{Logical: whether \code{M} was treated as a correlation matrix.}
-\item{n}{Sample size used for the QQ-plot.}
-\item{p}{Number of variables.}
+  \item{\code{values}}{Returned if \code{rtn_values = TRUE}. A list with:
+    \describe{
+      \item{\code{eigvals}}{Eigenvalues in decreasing order.}
+      \item{\code{vexp}}{Variance explained proportions (VEXP).}
+      \item{\code{cvexp}}{Cumulative variance explained proportions (CVEXP).}
+      \item{\code{kaiser}}{Number of eigenvalues larger than 1 for a
+        correlation matrix; \code{NA} otherwise.}
+      \item{\code{is_cor}}{Logical: whether \code{M} was treated as a
+        correlation matrix.}
+      \item{\code{n}}{Sample size used (or supplied).}
+      \item{\code{p}}{Number of variables.}
+    }
+  }
+  \item{\code{screeplot}}{Returned if \code{rtn_scree = TRUE}. The screeplot
+    object produced by \code{screeplot()}; \code{NULL} otherwise.}
+  \item{\code{wachterqq}}{Returned if \code{rtn_qq = TRUE}. The Wachter (MP)
+    QQ-plot object produced by \code{wachterqq()}; \code{NULL} otherwise.}
 }
 }
 \description{
@@ -96,7 +108,7 @@ When \code{M} is a data matrix, \code{M} is replaced internally by
 \code{cor(M)} or \code{cov(M)} depending on \code{make_cor}. Kaiser counts are
 only meaningful for correlation matrices. The MP QQ-plot requires \code{n};
 if \code{n} is missing when \code{M} is already a correlation/covariance
-matrix, a warning is issued and the QQ-plot is not produced.
+matrix, a warning is issued and the QQ-plot is skipped.
 }
 \seealso{
 \code{\link{screeplot}}, \code{\link{wachterqq}}, \code{\link{pca}}
