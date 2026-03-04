@@ -28,6 +28,9 @@ lsspca =
   function (X, alpha = 0.95, ncomps = 0, ncbyvexp = 1, method = "p", varselection = c("stepwise", "backward", "forward"), maxcard = 0, force_in = NULL, force_out = NULL, scalex = FALSE, mkvif = FALSE) 
   {
   
+    if(any(is.na(X)))
+      stop("the matrix cannot contain NAs")
+    
   if(is.data.frame(X)) X = as.matrix(X)
   p = ncol(X)
   n = nrow(X)
