@@ -1,4 +1,6 @@
 
+# PMlsspca 1.0.5
+- created new function pc_retantion to automate making diagnostic plots and stats
 # PMlsspca 1.0.4
 -cleaned documentation
 -improved cpp to mapped view by reference instead of copies
