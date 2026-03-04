@@ -99,7 +99,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
   if (length(badarg) > 0){
     stop(paste0("\nUnused arguments: ", paste(names(badarg), collapse=", ")))
   }
-# ## --
+  # ## --
   if (is.spca(x) == TRUE){
     if (perc == TRUE){
       if(any(names(x) == "contributions"))
@@ -130,7 +130,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
       stop(paste("The argument must be either a x object or a matrix, not a", 
                  class(x), "object"))
   } ## end if
-  if (missing(cols))
+  if (missing(cols) || is.null(cols))
     cols <- 1:ncol(A)
   else
     if (length(cols) == 1L)
@@ -138,20 +138,20 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
   if (only.nonzero == FALSE)
     rows <- 1:nrow(A)
   else{
-    rows <- which(rowSums(abs(A) > thresh) > 0)
-}  
-  A <- as.matrix(A[rows,cols])
+    rows <- which(rowSums(abs(A[, cols]) > thresh) > 0)
+  }  
+  A <- as.matrix(A[rows, cols])
   ## assigns names to laodings
-  if (!is.null(namescomp) & length(namescomp) == ncol(A)){
-    colnames(A) <- namescomp
+  if ((!is.null(namescomp)) & (length(namescomp) >= length(cols))){
+    colnames(A) <- namescomp[cols]
   }
   else{
-    if (!is.null(namescomp) & length(namescomp) != ncol(A))
+    if (!(is.null(namescomp)) & (length(namescomp) < length(cols)))
       message("the length of namescomp is incorrect, automatic names assigned")
-    colnames(A) <- paste("Comp",1: ncol(A), sep = "")
+    colnames(A) <- paste("Comp",cols, sep = "")
   }
   
-# # -----  formatting -
+  # # -----  formatting -
   
   if (perc == TRUE)
     fx <- format(round(A*100, max(digits-2,0)),drop0trailing = TRUE, justify = "centre")
@@ -187,6 +187,7 @@ print.spca <- function(x, cols, only.nonzero = TRUE, perc = TRUE, digits = 3, th
   else 
     invisible()
 }
+
 
 # #' @export
 # summary <- function(spca_obj, ...){
