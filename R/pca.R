@@ -113,7 +113,6 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
   return(out)
 }
 
-## fixed =====
 #' \strong{Eigenvalue-based diagnostics for retaining principal components}
 #'
 #' Computes only the eigenvalues of a correlation or covariance matrix using
@@ -126,50 +125,57 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
 #' eigenvalues larger than 1).
 #'
 #' @param M A numeric data matrix (\eqn{n \times p}) or a symmetric correlation /
-#' covariance matrix (\eqn{p \times p}). If \code{M} is square but not symmetric,
-#' it is treated as a data matrix and a warning is issued.
+#'   covariance matrix (\eqn{p \times p}). If \code{M} is square but not symmetric,
+#'   it is treated as a data matrix and a warning is issued.
 #' @param n Optional integer sample size. Required for the MP QQ-plot when
-#' \code{M} is already a correlation/covariance matrix. If \code{M} is a data
-#' matrix, \code{n} is set to \code{nrow(M)}.
+#'   \code{M} is already a correlation/covariance matrix. If \code{M} is a data
+#'   matrix, \code{n} is set to \code{nrow(M)}.
 #' @param make_cor Logical: only used if \code{M} is a data matrix. If
-#' \code{TRUE}, computes \code{cor(M)}; if \code{FALSE}, computes \code{cov(M)}.
+#'   \code{TRUE}, computes \code{cor(M)}; if \code{FALSE}, computes \code{cov(M)}.
 #' @param nplot Integer: number of eigenvalues to include in the plots. Default
-#' is \code{p}.
+#'   is \code{p}.
 #' @param kaiser_line Logical: if \code{TRUE}, adds a horizontal line at
-#' \eqn{y = 1} in the screeplot. Default is \code{TRUE} for correlation matrices
-#' and \code{FALSE} for covariance matrices.
+#'   \eqn{y = 1} in the screeplot. Default is \code{TRUE} for correlation matrices
+#'   and \code{FALSE} for covariance matrices.
 #' @param nfit_line Integer: passed to \code{wachterqq()} to control the number
-#' of points used to fit the line.
-#'
+#'   of points used to fit the line.
 #' @param rtn_scree Logical: should the screeplot object be returned?
 #' @param prn_scree Logical: should the screeplot be plotted?
 #' @param rtn_qq Logical: should the QQ-plot object be returned?
 #' @param prn_qq Logical: should the QQ-plot be plotted?
-#'
-#' @param prn_cvexp Logical: should CVEXP be printed as percentages (with a
-#' trailing \code{\%})?
+#' @param rtn_values Logical: should eigenvalue statistics be returned?
+#'   Default \code{TRUE}.
+#' @param prn_cvexp integer: how many CVEXP values should be  printed as percentages (with a
+#'   trailing \code{\%})?
 #' @param digits_cvexp Integer: number of decimal digits used when printing
-#' CVEXP percentages.
-#'
+#'   CVEXP percentages.
 #' @param tol_cor Numeric tolerance for detecting a correlation matrix from a
-#' symmetric square input \code{M} via \code{diag(M) = 1}.
+#'   symmetric square input \code{M} via \code{diag(M) == 1}.
 #' @param tol_sym Numeric tolerance for checking symmetry of a square input
-#' matrix.
+#'   matrix.
 #'
-#' @return A list with elements:
+#' @return A named list containing any combination of the following three
+#'   elements, depending on the \code{rtn_*} flags. If no flag is \code{TRUE},
+#'   returns \code{invisible(NULL)}.
+#'
 #' \describe{
-#' \item{eigvals}{Vector of eigenvalues in decreasing order.}
-#' \item{vexp}{Vector of variance explained proportions (VEXP).}
-#' \item{cvexp}{Vector of cumulative variance explained proportions (CVEXP).}
-#' \item{kaiser}{Number of eigenvalues larger than 1 if a correlation matrix;
-#' \code{NA} otherwise.}
-#' \item{screeplot}{Screeplot object if \code{rtn_scree = TRUE}; otherwise
-#' \code{NULL}.}
-#' \item{wachterqq}{Wachter (MP) QQ-plot object if \code{rtn_qq = TRUE}; otherwise
-#' \code{NULL}.}
-#' \item{is_cor}{Logical: whether \code{M} was treated as a correlation matrix.}
-#' \item{n}{Sample size used for the QQ-plot.}
-#' \item{p}{Number of variables.}
+#'   \item{\code{values}}{Returned if \code{rtn_values = TRUE}. A list with:
+#'     \describe{
+#'       \item{\code{eigvals}}{Eigenvalues in decreasing order.}
+#'       \item{\code{vexp}}{Variance explained proportions (VEXP).}
+#'       \item{\code{cvexp}}{Cumulative variance explained proportions (CVEXP).}
+#'       \item{\code{kaiser}}{Number of eigenvalues larger than 1 for a
+#'         correlation matrix; \code{NA} otherwise.}
+#'       \item{\code{is_cor}}{Logical: whether \code{M} was treated as a
+#'         correlation matrix.}
+#'       \item{\code{n}}{Sample size used (or supplied).}
+#'       \item{\code{p}}{Number of variables.}
+#'     }
+#'   }
+#'   \item{\code{screeplot}}{Returned if \code{rtn_scree = TRUE}. The screeplot
+#'     object produced by \code{screeplot()}; \code{NULL} otherwise.}
+#'   \item{\code{wachterqq}}{Returned if \code{rtn_qq = TRUE}. The Wachter (MP)
+#'     QQ-plot object produced by \code{wachterqq()}; \code{NULL} otherwise.}
 #' }
 #'
 #' @details Eigenvalues are computed with the C++ routine \code{EigenvaluesC(M)}.
@@ -177,26 +183,26 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
 #' \code{cor(M)} or \code{cov(M)} depending on \code{make_cor}. Kaiser counts are
 #' only meaningful for correlation matrices. The MP QQ-plot requires \code{n};
 #' if \code{n} is missing when \code{M} is already a correlation/covariance
-#' matrix, a warning is issued and the QQ-plot is not produced.
+#' matrix, a warning is issued and the QQ-plot is skipped.
 #'
 #' @seealso \code{\link{screeplot}}, \code{\link{wachterqq}}, \code{\link{pca}}
 #'
 #' @export pc_retention
 pc_retention <- function(M,
-                         n          = NULL,
-                         make_cor   = TRUE,        # only used if M is a data matrix
-                         nplot      = NULL,
-                         kaiser_line = NULL,
-                         nfit_line  = NULL,
-                         rtn_scree  = FALSE, prn_scree  = TRUE,
-                         rtn_qq     = FALSE, prn_qq     = TRUE,
-                         prn_cvexp  = FALSE,
+                         n            = NULL,
+                         make_cor     = TRUE,
+                         nplot        = NULL,
+                         kaiser_line  = NULL,
+                         nfit_line    = NULL,
+                         rtn_scree    = FALSE, prn_scree    = TRUE,
+                         rtn_qq       = FALSE, prn_qq       = TRUE,
+                         rtn_values   = TRUE,  
+                         prn_cvexp    = 0,
                          digits_cvexp = 1,
-                         tol_cor    = 1e-8,
-                         tol_sym    = 1e-8) {
+                         tol_cor      = 1e-8,
+                         tol_sym      = 1e-8) {
   
-  
-  if(any(is.na(M)))
+  if (any(is.na(M)))
     stop("the matrix cannot contain NAs")
   if (!is.matrix(M)) M <- as.matrix(M)
   
@@ -235,8 +241,8 @@ pc_retention <- function(M,
   vexp  <- eigvals / sum(eigvals)
   cvexp <- cumsum(vexp)
   
-  if (prn_cvexp) {
-    cvexp_chr        <- paste0(formatC(100 * cvexp, format = "f", digits = digits_cvexp), "%")
+  if (prn_cvexp > 0) {
+    cvexp_chr        <- paste0(formatC(100 * cvexp[1:prn_cvexp], format = "f", digits = digits_cvexp), "%")
     names(cvexp_chr) <- paste0("PC", seq_along(cvexp_chr))
     print(cvexp_chr)
   }
@@ -260,28 +266,37 @@ pc_retention <- function(M,
   if (isTRUE(prn_qq) || isTRUE(rtn_qq)) {
     if (is.null(n) || !is.finite(n) || n <= 1) {
       warning("To produce the MP QQ-plot you must supply `n` (sample size), unless `M` was a data matrix.")
-      prn_qq = FALSE
-      rtn_qq = FALSE}
-    else{
-      qq_pl <- wachterqq(eigvals = eigvals,
-                         p = p,
-                         n = n,
-                         cor = is_cor,
-                         nplot = nplot,
+      prn_qq <- FALSE
+      rtn_qq <- FALSE
+    } else {
+      qq_pl <- wachterqq(eigvals   = eigvals,
+                         p         = p,
+                         n         = n,
+                         cor       = is_cor,
+                         nplot     = nplot,
                          nfit_line = nfit_line,
-                         prn = isTRUE(prn_qq),
-                         rtn = isTRUE(rtn_qq))
+                         prn       = isTRUE(prn_qq),
+                         rtn       = isTRUE(rtn_qq))
     }
   }
-  list(eigvals   = eigvals,
-       vexp      = vexp,
-       cvexp     = cvexp,
-       kaiser    = kaiser,
-       screeplot = if (isTRUE(rtn_scree)) scree_pl else NULL,
-       wachterqq = if (isTRUE(rtn_qq))   qq_pl    else NULL,
-       is_cor    = is_cor,
-       n         = n,
-       p         = p)
+  
+  # --- Assemble output: only include what was requested ---
+  out <- list()
+  
+  if (isTRUE(rtn_values))
+    out$values <- list(eigvals = eigvals,
+                       vexp    = vexp,
+                       cvexp   = cvexp,
+                       kaiser  = kaiser,
+                       is_cor  = is_cor,
+                       n       = n,
+                       p       = p)
+  
+  if (isTRUE(rtn_scree))
+    out$screeplot <- scree_pl
+  
+  if (isTRUE(rtn_qq))
+    out$wachterqq <- qq_pl
+  
+  if (length(out) == 0) invisible(NULL) else out
 }
-
-
