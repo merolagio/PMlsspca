@@ -93,6 +93,10 @@ EigenC <- function(S) {
     .Call(`_PMlsspca_EigenC`, S)
 }
 
+EigenvaluesC <- function(S) {
+    .Call(`_PMlsspca_EigenvaluesC`, S)
+}
+
 GenEigenC <- function(A, B) {
     .Call(`_PMlsspca_GenEigenC`, A, B)
 }
