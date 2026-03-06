@@ -22,7 +22,7 @@ aggregate_by_scale(
 
 \item{perc}{if TRUE the aggregated scale contributions are returned as percentages.}
 
-\item{if}{integer the nunber of digits to which rounfd the aggregated values. If FALSE no rounding is done.}
+\item{digits}{If integer, the number of digits to which to round the aggregated values. If FALSE no rounding is done.}
 }
 \value{
 A numeric vector (if `x` is a vector) or numeric matrix (if `x` is a

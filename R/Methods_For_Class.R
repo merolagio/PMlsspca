@@ -971,7 +971,7 @@ new_spca = function(A, S, X = NULL, method = NULL){
 #' @param only.nonzero Logical. If `TRUE`, scales with zero total (based on
 #'   `rowSums(abs(out))`) are removed from the output.
 #' @param perc if TRUE the aggregated scale contributions are returned as percentages.
-#' @param if integer the nunber of digits to which rounfd the aggregated values. If FALSE no rounding is done.  
+#' @param digits If integer, the number of digits to which to round the aggregated values. If FALSE no rounding is done.  
 #'
 #' @details
 #' If loadings are passed and perc == TRUE, perc is turned to FALSE and digits to 3 because it is not appropriate to express L2 unit loadings as percentages. 
