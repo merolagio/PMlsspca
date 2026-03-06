@@ -72,15 +72,9 @@ crhc_r = cor(crhc)
 ##Correlation plot===========
 crhc_cor_pl = plotcor(crhc_r, rtn = T, axis_labels = F)
 
-#scree and qq-plot===========
+#screeplot and qq-plot===========
 
-cr_ret = pc_retention(cr_r, n = nrow(msscq), prn_scree = FALSE, prn_qq = F, prn_cvexp = 10, rtn_values = T)
-
-pc_retention(cr_r, n = nrow(msscq), kaiser_line = T, rtn_values = F, prn_scree = T, prn_qq = T, nfit_line = -4)
-
-cr_ee = eigen(cr_r)
-screeplot(cr_ee$values, kaiser_line = T)
-wachterqq(cr_ee$values, p = cr_p, n = cr_n, cor = T, nfit_line = -4)
+pc_retention(cr_r, n = nrow(crime_data), kaiser_line = T, rtn_values = F, prn_scree = T, prn_qq = T, nfit_line = -4)
 
 ##PCA===============
 cr_pca = pca(crime_data, ncomps = 4)

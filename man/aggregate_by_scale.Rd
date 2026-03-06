@@ -4,7 +4,13 @@
 \alias{aggregate_by_scale}
 \title{\strong{Aggregate loadings or contributions by scale}}
 \usage{
-aggregate_by_scale(x, ind, only.nonzero = TRUE)
+aggregate_by_scale(
+  x,
+  ind,
+  only.nonzero = TRUE,
+  perc = T,
+  digits = ifelse(perc, 1, 3)
+)
 }
 \arguments{
 \item{x}{A numeric vector, or a numeric matrix/data.frame containing loadings or contributions.}
@@ -13,6 +19,10 @@ aggregate_by_scale(x, ind, only.nonzero = TRUE)
 
 \item{only.nonzero}{Logical. If `TRUE`, scales with zero total (based on
 `rowSums(abs(out))`) are removed from the output.}
+
+\item{perc}{if TRUE the aggregated scale contributions are returned as percentages.}
+
+\item{if}{integer the nunber of digits to which rounfd the aggregated values. If FALSE no rounding is done.}
 }
 \value{
 A numeric vector (if `x` is a vector) or numeric matrix (if `x` is a
@@ -23,4 +33,7 @@ A numeric vector (if `x` is a vector) or numeric matrix (if `x` is a
 Computes scale-level sums by aggregating an input vector or the columns of an
 input matrix/data.frame according to a grouping index (e.g., scale membership
 of variables).
+}
+\details{
+If loadings are passed and perc == TRUE, perc is turned to FALSE and digits to 3 because it is not appropriate to express L2 unit loadings as percentages.
 }
