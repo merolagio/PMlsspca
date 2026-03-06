@@ -58,5 +58,4 @@ which can run on the spca utilities. .
 }
 \seealso{
 See also \code{\link{print.spca}, \link{summary.spca}}
-######============================================================
 }
