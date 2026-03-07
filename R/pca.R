@@ -64,7 +64,7 @@ pca <- function(M, ncomps, centerdata = FALSE, scaledata = FALSE,
     if (centerdata | scaledata){
       M = scaleC(M, centerdata, scaledata)
      }
-      S = crossprod(M)
+      S = ataC(M)
   } 
   else{
     S = M

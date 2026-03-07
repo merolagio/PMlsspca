@@ -163,10 +163,8 @@ double sumdiagC(const Eigen::Map<Eigen::MatrixXd>& S) {
 
 // [[Rcpp::export]]
 Rcpp::List EigenC(const Eigen::Map<Eigen::MatrixXd>& S) {
-  if ((S - S.adjoint()).norm() > 1e-8 * S.norm())
+  if ((S - S.adjoint()).norm() > 1e-6 * S.norm())
     Rcpp::stop("S in EigenC must be square");
-  if (S != S.adjoint())
-    Rcpp::stop("S in EigenC must be symmetric");
   Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(S);
   return Rcpp::List::create(
     Rcpp::Named("vec") = Eigen::MatrixXd(es.eigenvectors()).rowwise().reverse(),
@@ -177,10 +175,8 @@ Rcpp::List EigenC(const Eigen::Map<Eigen::MatrixXd>& S) {
 
 // [[Rcpp::export]]
 Eigen::VectorXd EigenvaluesC(const Eigen::Map<Eigen::MatrixXd>& S) {
-  if ((S - S.adjoint()).norm() > 1e-8 * S.norm())
+  if ((S - S.adjoint()).norm() > 1e-6 * S.norm())
     Rcpp::stop("S in EigenC must be square");
-  if (S != S.adjoint())
-    Rcpp::stop("S in EigenC must be symmetric");
   Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(S, Eigen::EigenvaluesOnly);
   return Eigen::VectorXd(es.eigenvalues().reverse());
 }
